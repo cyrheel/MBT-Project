@@ -5,6 +5,7 @@ import InscriptionPage from "./Pages/InscriptionPage";
 import UserListPage from "./Pages/UserListPage";
 import TicketCreationPage from "./Pages/TicketCreationPage";
 import TicketDetailPage from "./Pages/TicketDetailPage";
+import TicketListPage from "./Pages/TicketListPage";
 import ProjectCreationPage from "./Pages/ProjetCreationPage";
 import ProjetDetailsPage from "./Pages/ProjetDetailsPage";
 import ProjectListPage from "./Pages/ProjectListPage";
@@ -30,6 +31,7 @@ function Routeur() {
         }
         <Route path="/ticketCreation" element={<TicketCreationPage />} />
         <Route path="/ticketDetails" element={<TicketDetailPage />} />
+        <Route path="/ticketlist" element={<TicketListPage />} />
         {
           // Other Routes
         }
