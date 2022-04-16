@@ -1,11 +1,12 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import HomePage from "./Pages/HomePage";
 import ConnexionPage from "./Pages/ConnexionPage";
+import InscriptionPage from "./Pages/InscriptionPage";
 import UserListPage from "./Pages/UserListPage";
 import TicketDetailPage from "./Pages/TicketDetailPage";
-import InscriptionPage from "./Pages/InscriptionPage";
 import ProjectCreationPage from "./Pages/ProjetCreationPage";
 import ProjetDetailsPage from "./Pages/ProjetDetailsPage";
+import ProjectListPage from "./Pages/ProjectListPage";
 
 function Routeur() {
   return (
@@ -22,6 +23,7 @@ function Routeur() {
         }
         <Route path="/projetCreation" element={<ProjectCreationPage />} />
         <Route path="/projetDetails" element={<ProjetDetailsPage />} />
+        <Route path="/projetList" element={<ProjectListPage />} />
         {
           // Ticket Routes
         }
