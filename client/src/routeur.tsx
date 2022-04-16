@@ -5,6 +5,7 @@ import UserListPage from "./Pages/UserListPage";
 import TicketDetailPage from "./Pages/TicketDetailPage";
 import InscriptionPage from "./Pages/InscriptionPage";
 import ProjectCreationPage from "./Pages/ProjetCreationPage";
+import ProjetDetailsPage from "./Pages/ProjetDetailsPage";
 
 function Routeur() {
   return (
@@ -20,6 +21,7 @@ function Routeur() {
           // Project Routes
         }
         <Route path="/projetCreation" element={<ProjectCreationPage />} />
+        <Route path="/projetDetails" element={<ProjetDetailsPage />} />
         {
           // Ticket Routes
         }
