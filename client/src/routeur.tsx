@@ -3,16 +3,31 @@ import HomePage from "./Pages/HomePage";
 import ConnexionPage from "./Pages/ConnexionPage";
 import UserListPage from "./Pages/UserListPage";
 import TicketDetailPage from "./Pages/TicketDetailPage";
+import InscriptionPage from "./Pages/InscriptionPage";
+import ProjectCreationPage from "./Pages/ProjetCreationPage";
 
 function Routeur() {
   return (
     <BrowserRouter>
       <Routes>
+        {
+          // Main Routes
+        }
         <Route path="" element={<HomePage />} />
         <Route path="/login" element={<ConnexionPage />} />
-        <Route path="/userlist" element={<UserListPage />} />
+        <Route path="/register" element={<InscriptionPage />} />
+        {
+          // Project Routes
+        }
+        <Route path="/projetCreation" element={<ProjectCreationPage />} />
+        {
+          // Ticket Routes
+        }
         <Route path="/ticketdetail" element={<TicketDetailPage />} />
-
+        {
+          // Other Routes
+        }
+        <Route path="/userlist" element={<UserListPage />} />
       </Routes>
     </BrowserRouter>
   );
