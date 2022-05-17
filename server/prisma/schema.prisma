@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int       @id @default(autoincrement())
+  name           String    @db.VarChar(255)
+  email          String    @db.VarChar(255)
+  hashedPassword String    @db.VarChar(255)
+  role           String    @db.VarChar(255)
+  // fait la liaison avec la table  Project de la base de données
+  projects       Project[]
+  // fait la liaison avec la table Ticket de la base de données
+  tickets        Ticket[]
+  // fait la liaison avec la table Comment de la base de données
+  comments       Comment[]
+
+  Picture    Picture? @relation(fields: [picture_id], references: [id])
+  picture_id Int?
+}
+
+model Project {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(255)
+  description String   @db.VarChar(255)
+  start_time  DateTime
+  end_time    DateTime
+  status      String   @db.VarChar(255)
+
+  // Chaque projet a plusieurs utilisateurs
+  user_id Int
+  user    User @relation(fields: [user_id], references: [id])
+
+  // Chaque projet a plusieurs tickets
+  ticket_id Int?
+  ticket    Ticket? @relation(fields: [ticket_id], references: [id])
+
+
+  Picture    Picture? @relation(fields: [picture_id], references: [id])
+  picture_id Int?
+}
+
+model Ticket {
+  id             Int    @id @default(autoincrement())
+  title          String @db.VarChar(255)
+  description    String @db.VarChar(255)
+  estimated_time Int
+  spent_time     Int
+  status         String @db.VarChar(255)
+  labels         String @db.VarChar(255)
+  priority       String @db.VarChar(255)
+  difficulty     String @db.VarChar(255)
+
+  Project Project[]
+  // utilisateur attaché au ticket
+  user_id Int
+  user    User      @relation(fields: [user_id], references: [id])
+
+  // commentaires lié au ticket
+  Comment   Comment? @relation(fields: [commentId], references: [id])
+  commentId Int?
+}
+
+model Picture {
+  id      Int       @id @default(autoincrement())
+  url     String    @db.VarChar(255)
+  Project Project[]
+  User    User[]
+}
+
+model Comment {
+  id           Int      @id @default(autoincrement())
+  content      String   @db.VarChar(255)
+  published_at DateTime
+  modified_at  DateTime
+
+  Ticket Ticket[]
+
+  User    User? @relation(fields: [user_id], references: [id])
+  user_id Int?
+}
+
+// npx prisma migrate dev
+// npx prisma migrate reset
