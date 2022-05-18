@@ -10,7 +10,7 @@ datasource db {
 model User {
   id             Int       @id @default(autoincrement())
   name           String    @db.VarChar(255)
-  email          String    @db.VarChar(255)
+  email          String    @unique @db.VarChar(255)
   hashedPassword String    @db.VarChar(255)
   role           String    @db.VarChar(255)
   // fait la liaison avec la table  Project de la base de données
