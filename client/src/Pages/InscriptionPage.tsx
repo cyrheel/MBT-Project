@@ -1,5 +1,13 @@
+import React from "react";
+import Navbar from "../Components/Navbar";
+
 function InscriptionPage() {
-  return <p>Page d'inscription register page</p>;
+  return (
+    <div>
+      <Navbar />
+      <p>Page d'inscription register page</p>
+    </div>
+  );
 }
 
 export default InscriptionPage;
