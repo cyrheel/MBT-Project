@@ -15,7 +15,7 @@ function Routeur() {
         <Route path="/register" element={<InscriptionPage />} />
         <Route path="/projetCreation" element={<ProjectCreationPage />} />
         <Route path="/projetDetails" element={<ProjetDetailsPage />} />
-        <Route path="/ticketCreation" element={<TicketCreationPage />} />
+        <Route path="/ticketCreation" element={TicketCreationPage} />
       </Routes>
     </BrowserRouter>
   );
