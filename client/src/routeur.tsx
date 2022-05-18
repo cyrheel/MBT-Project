@@ -3,6 +3,7 @@ import HomePage from "./Pages/HomePage";
 import ConnexionPage from "./Pages/ConnexionPage";
 import InscriptionPage from "./Pages/InscriptionPage";
 import UserListPage from "./Pages/UserListPage";
+import UserParamsPage from "./Pages/UserParamsPage";
 import TicketCreationPage from "./Pages/TicketCreationPage";
 import TicketDetailPage from "./Pages/TicketDetailPage";
 import TicketListPage from "./Pages/TicketListPage";
@@ -36,6 +37,7 @@ function Routeur() {
           // Other Routes
         }
         <Route path="/userlist" element={<UserListPage />} />
+        <Route path="/userparam" element={<UserParamsPage />} />
       </Routes>
     </BrowserRouter>
   );
