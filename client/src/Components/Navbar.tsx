@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import defaultPP from "../statics/DefaultPP.png";
+import logo from "../statics/M6dbc40627f36e2e0dbc4141850ce55f71649942577809.png";
 import { Container } from "../Styles/NavBarStyle";
 
 function Navbar(): JSX.Element {
@@ -9,6 +10,7 @@ function Navbar(): JSX.Element {
 
   return (
     <Container>
+      <img src={logo} alt="logo" />
       <button onClick={() => navigate("/", { replace: true })}>Home</button>
       <button onClick={() => navigate("/projetList", { replace: true })}>
         Projects
