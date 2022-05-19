@@ -1,5 +1,15 @@
+import React from "react";
+import Navbar from "../Components/Navbar";
+import ProjectCreationForm from "../Components/ProjectCreationForm";
+
 function ProjectCreationPage() {
-  return <p>Ici la page de création d'un projet</p>;
+  return (
+    <div>
+      <Navbar />
+      <h1>Create Project</h1>
+      <ProjectCreationForm />
+    </div>
+  );
 }
 
 export default ProjectCreationPage;

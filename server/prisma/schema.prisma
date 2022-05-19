@@ -7,83 +7,83 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+//? Table "Utilisateur"
 model User {
   id             Int       @id @default(autoincrement())
   name           String    @db.VarChar(255)
-  email          String    @db.VarChar(255)
+  email          String    @unique @db.VarChar(255)
   hashedPassword String    @db.VarChar(255)
   role           String    @db.VarChar(255)
-  // fait la liaison avec la table  Project de la base de données
-  projects       Project[]
-  // fait la liaison avec la table Ticket de la base de données
-  tickets        Ticket[]
-  // fait la liaison avec la table Comment de la base de données
-  comments       Comment[]
-
-  Picture    Picture? @relation(fields: [picture_id], references: [id])
-  picture_id Int?
+  //! Foreign Key
+  //* One To One
+  User_Picture   Picture?  @relation(fields: [picture_id], references: [id])
+  picture_id     Int?
+  //* Many To Many
+  Comments       Comment[]
+  Projects       Project[]
+  Tickets        Ticket[]
 }
 
+//? Table "Projet"
 model Project {
-  id          Int      @id @default(autoincrement())
-  title       String   @db.VarChar(255)
-  description String   @db.VarChar(255)
-  start_time  DateTime
-  end_time    DateTime
-  status      String   @db.VarChar(255)
-
-  // Chaque projet a plusieurs utilisateurs
-  user_id Int
-  user    User @relation(fields: [user_id], references: [id])
-
-  // Chaque projet a plusieurs tickets
-  ticket_id Int?
-  ticket    Ticket? @relation(fields: [ticket_id], references: [id])
-
-
-  Picture    Picture? @relation(fields: [picture_id], references: [id])
-  picture_id Int?
+  id              Int       @id @default(autoincrement())
+  title           String    @db.VarChar(255)
+  description     String?   @db.VarChar(255)
+  start_time      DateTime
+  end_time        DateTime?
+  status          String?   @db.VarChar(255)
+  //! Foreign Key
+  //* One To One
+  Project_Picture Picture?  @relation(fields: [picture_id], references: [id])
+  picture_id      Int?
+  //* One To Many
+  Tickets         Ticket[]
+  //* Many To Many
+  Users           User[]
 }
 
+//? Table "Ticket"
 model Ticket {
-  id             Int    @id @default(autoincrement())
-  title          String @db.VarChar(255)
-  description    String @db.VarChar(255)
-  estimated_time Int
-  spent_time     Int
-  status         String @db.VarChar(255)
-  labels         String @db.VarChar(255)
-  priority       String @db.VarChar(255)
-  difficulty     String @db.VarChar(255)
+  id             Int       @id @default(autoincrement())
+  title          String    @db.VarChar(255)
+  description    String?   @db.VarChar(255)
+  estimated_time Int?
+  spent_time     Int?
+  status         String?   @db.VarChar(255)
+  labels         String?   @db.VarChar(255)
+  priority       String?   @db.VarChar(255)
+  difficulty     String?   @db.VarChar(255)
+  //! Foreign Key
+  //* Many To One
+  Project        Project?  @relation(fields: [projectId], references: [id])
+  projectId      Int?
+  //* Many To Many
+  Comments       Comment[]
+  Users          User[]
 
-  Project Project[]
-  // utilisateur attaché au ticket
-  user_id Int
-  user    User      @relation(fields: [user_id], references: [id])
-
-  // commentaires lié au ticket
-  Comment   Comment? @relation(fields: [commentId], references: [id])
-  commentId Int?
 }
 
+//? Table "Image"
 model Picture {
   id      Int       @id @default(autoincrement())
   url     String    @db.VarChar(255)
+  //! Foreign Key
+  //* One To One
   Project Project[]
   User    User[]
 }
 
+//? Table "Commentaire"
 model Comment {
-  id           Int      @id @default(autoincrement())
-  content      String   @db.VarChar(255)
+  id           Int       @id @default(autoincrement())
+  content      String    @db.VarChar(255)
   published_at DateTime
-  modified_at  DateTime
-
-  Ticket Ticket[]
-
-  User    User? @relation(fields: [user_id], references: [id])
-  user_id Int?
+  modified_at  DateTime?
+  //! Foreign Key
+  //* Many To Many
+  Users        User[]
+  Tickets      Ticket[]
 }
 
-// npx prisma migrate dev
-// npx prisma migrate reset
+//! npx prisma migrate dev
+//! npx prisma migrate reset
