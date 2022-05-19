@@ -7,11 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-//? Table "Utilisateur"
+//? TABLE "Utilisateur"
 model User {
   id             Int       @id @default(autoincrement())
   name           String    @db.VarChar(255)
-  email          String    @unique @db.VarChar(255)
+  email          String    @db.VarChar(255)
   hashedPassword String    @db.VarChar(255)
   role           String    @db.VarChar(255)
   //! Foreign Key
@@ -24,7 +24,7 @@ model User {
   Tickets        Ticket[]
 }
 
-//? Table "Projet"
+//? TABLE "Projet"
 model Project {
   id              Int       @id @default(autoincrement())
   title           String    @db.VarChar(255)
@@ -42,7 +42,7 @@ model Project {
   Users           User[]
 }
 
-//? Table "Ticket"
+//? TABLE "Ticket"
 model Ticket {
   id             Int       @id @default(autoincrement())
   title          String    @db.VarChar(255)
@@ -55,7 +55,7 @@ model Ticket {
   difficulty     String?   @db.VarChar(255)
   //! Foreign Key
   //* Many To One
-  Project        Project?  @relation(fields: [projectId], references: [id])
+  Project        Project?  @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId      Int?
   //* Many To Many
   Comments       Comment[]
@@ -63,7 +63,7 @@ model Ticket {
 
 }
 
-//? Table "Image"
+//? TABLE "Image"
 model Picture {
   id      Int       @id @default(autoincrement())
   url     String    @db.VarChar(255)
@@ -73,7 +73,7 @@ model Picture {
   User    User[]
 }
 
-//? Table "Commentaire"
+//? TABLE "Commentaire"
 model Comment {
   id           Int       @id @default(autoincrement())
   content      String    @db.VarChar(255)
