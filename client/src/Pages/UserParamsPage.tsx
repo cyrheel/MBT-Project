@@ -1,13 +1,13 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
 
-function ConnexionPage(): JSX.Element {
+function UserParamsPage() {
   return (
     <div>
       <Navbar />
-      <p>Connexion Page héhé</p>
+      <p>Ici la page des paramètre du compte</p>
     </div>
   );
 }
 
-export default ConnexionPage;
+export default UserParamsPage;

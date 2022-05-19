@@ -1,13 +1,13 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
 
-function ConnexionPage(): JSX.Element {
+function ProjectListPage() {
   return (
     <div>
       <Navbar />
-      <p>Connexion Page héhé</p>
+      <p>Ici la vue ou on verra la liste de tout les projet</p>
     </div>
   );
 }
 
-export default ConnexionPage;
+export default ProjectListPage;

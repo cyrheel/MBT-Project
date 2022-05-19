@@ -1,13 +1,13 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
 
-function ConnexionPage(): JSX.Element {
+function InscriptionPage() {
   return (
     <div>
       <Navbar />
-      <p>Connexion Page héhé</p>
+      <p>Page d'inscription register page</p>
     </div>
   );
 }
 
-export default ConnexionPage;
+export default InscriptionPage;
