@@ -1,5 +1,4 @@
 import React from "react";
-import { getAllJSDocTagsOfKind } from "typescript";
 import Navbar from '../Components/Navbar';
 import '../Styles/index.css';
 import defaultPP from "../statics/DefaultPP.svg";
