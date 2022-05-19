@@ -1,5 +1,7 @@
+import React from "react";
+
 function TicketDetailPage(): JSX.Element {
-    return <p>Connexion Page héhé</p>;
-  }
-  
-  export default TicketDetailPage;
+  return <div></div>;
+}
+
+export default TicketDetailPage;

@@ -56,10 +56,16 @@ function TicketCreationForm() {
 
   // Render
   return (
-    <div id="form">
-      <div id="left">
-        <label htmlFor="tskName">Task Name</label>
+    <div className="flex bg-slate-100 justify-evenly">
+      <div id="left" className="flex flex-col w-1/3">
+        <label
+          className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+          htmlFor="tskName"
+        >
+          Task Name :
+        </label>
         <input
+          className="bg-gray-200 text-gray-700 border rounded py-3 mb-3 leading-tight focus:outline-none focus:bg-white"
           id="tskName"
           type="text"
           value={taskName}
@@ -161,7 +167,7 @@ function TicketCreationForm() {
           ></input>
         </div>
       </div>
-      <div id="middle">
+      <div id="middle" className="flex flex-col w-1/3">
         <label htmlFor="tsklabels">Labels: </label>
         <input
           id="tsklabels"
@@ -173,7 +179,7 @@ function TicketCreationForm() {
           TODO: add time management
         */}
       </div>
-      <div id="right">
+      <div id="right" className="flex flex-col w-1/3">
         <label htmlFor="tckDesc">Task Description</label>
         <textarea
           id="tckDesc"
