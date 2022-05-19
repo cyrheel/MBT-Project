@@ -5,6 +5,14 @@
   margin: 0;
 }
 
+.default-pp {
+  filter: invert(25%) sepia(84%) saturate(7241%) hue-rotate(356deg) brightness(97%) contrast(117%);
+}
+
+.logo {
+  filter: invert(75%) sepia(93%) saturate(2024%) hue-rotate(146deg) brightness(93%) contrast(88%);
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
