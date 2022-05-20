@@ -1,6 +1,6 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
-import { useGetProject } from "../hooks/useGetProject";
+import { useGetProject } from "../Hooks/useGetProject";
 import ProjectList from "../Components/ProjectList";
 import IProjet from "../Interfaces/IProject";
 

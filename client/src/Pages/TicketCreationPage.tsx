@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../Components/Navbar";
 import TicketCreationForm from "../Components/TicketCreationForm";
 
-function TicketCreationPage() {
+function TicketCreationPage(): JSX.Element {
   return (
     <div className="flex flex-col w-full h-screen">
       <Navbar />

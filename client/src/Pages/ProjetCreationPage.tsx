@@ -2,7 +2,7 @@ import React from "react";
 import Navbar from "../Components/Navbar";
 import ProjectCreationForm from "../Components/ProjectCreationForm";
 
-function ProjectCreationPage() {
+function ProjectCreationPage(): JSX.Element {
   return (
     <div>
       <Navbar />
