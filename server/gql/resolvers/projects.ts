@@ -8,7 +8,6 @@ export const projects = {
       return await db.Project.findMany({
         include: {
           Tickets: true,
-          Users: true,
         },
       });
     },
