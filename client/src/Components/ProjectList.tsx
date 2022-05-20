@@ -1,30 +1,22 @@
 import React from "react";
-import { Project } from "../hooks/useGetProject";
+import IProjet from "../Interfaces/IProject";
 
-interface ProjectsProps{
-    projects : Project[]
-}
-
-const ProjectList : React.FC<ProjectsProps> = ({projects}: ProjectsProps) =>
-{
-    console.log(projects);
-    
+const ProjectList = (props: any) => {
   return (
     <div>
-        {projects.map(project => (
-            <div key={project.id}>
-              <p>{project.title}</p>
-              <p>{project.description}</p>
-              <div>
-                <p>{project.start_time.toDateString()}</p>
-                <p>{project.end_time.toDateString()}</p>
-                <p>{project.status}</p>
-                
-              </div>
-            </div>
-        ))}
+      {props.projects.map((project: IProjet) => (
+        <div key={project.id}>
+          <p>{project.title}</p>
+          <p>{project.description}</p>
+          <div>
+            <p>{project.start_time.toString()}</p>
+            <p>{project.end_time?.toString()}</p>
+            <p>{project.status}</p>
+          </div>
+        </div>
+      ))}
     </div>
   );
-}
+};
 
 export default ProjectList;
