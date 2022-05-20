@@ -1,28 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import Navbar from "../Components/Navbar";
-import SearchBar from "../Components/SearchBar";
-// import ProjectItem from "../Components/ProjectItem";
+import { useGetProject } from "../hooks/useGetProject";
+import ProjectList from "../Components/ProjectList";
 
-function ProjectListPage() {
-  // Helpers
-  // const fakeData = [""];
-
-  // State
-  // const [projects, setProjects] = useState<string[]>([]);
-
-  // Render
+const ProjectListPage = () =>
+{
+  const projects = useGetProject();
   return (
-    <div className="flex flex-col w-full h-screen">
+    <div>
       <Navbar />
-      <h2 className="flex items-center justify-center font-medium leading-tight text-4xl mt-0 mb-2 text-blue-600">
-        Project List
-      </h2>
-      <SearchBar />
-      {/*
-      {projects.map((project) => 
-        <ProjectItem {...project} />
-      }
-      */}
+      <ProjectList projects={projects || []}/>
     </div>
   );
 }
