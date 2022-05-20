@@ -1,8 +1,14 @@
-const { ApolloServer } = require('apollo-server');
-import typeDefs from './schema';
-import { resolvers } from './schema';
+import typeDefs from './gql/schema';
+import { projects } from './gql/resolvers/projects';
+import { tickets } from './gql/resolvers/tickets';
+import { users } from './gql/resolvers/users';
 
-const server = new ApolloServer({ typeDefs, resolvers });
+const { ApolloServer } = require('apollo-server');
+
+const server = new ApolloServer({
+  typeDefs,
+  resolvers: [projects, tickets, users],
+});
 
 server.listen().then(() => {
   console.log(`
