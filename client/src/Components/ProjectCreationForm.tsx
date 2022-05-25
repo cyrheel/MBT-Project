@@ -1,4 +1,11 @@
 import React, { useState } from "react";
+import {
+  cardStyle,
+  formContainerStyle,
+  inputStyle,
+  buttonStyle,
+  inputContainerStyle,
+} from "../Styles/style";
 
 // Interfaces
 
@@ -50,57 +57,79 @@ function ProjectCreationForm(): JSX.Element {
 
   // Render
   return (
-    <div id="form">
-      <div id="left">
-        <label htmlFor="projName">Project Name</label>
-        <input
-          id="projName"
-          type="text"
-          value={projectName}
-          onChange={(e: any) => HandleProjectNameChanges(e)}
-        ></input>
-        <label htmlFor="projMembers">Project Members</label>
-        <select
-          id="projMembers"
-          onChange={(e: any) => HandleProjectMembersChanges(e)}
-        >
-          <option value="wip">A voir pour mettre de vrais user ?</option>
-          <option value="wip2">ça serait cool d'avoir leur pp aussi</option>
-          <option value="wip3">trkl c'est du detail</option>
-        </select>
-        <label htmlFor="startD">Start Date</label>
-        <input
-          id="startD"
-          type="date"
-          value={startDate}
-          onChange={(e: any) => HandleStartDateChanges(e)}
-        ></input>
-        <label htmlFor="endD">End Date</label>
-        <input
-          id="endD"
-          type="date"
-          value={endDate}
-          onChange={(e: any) => HandleEndDateChanges(e)}
-        ></input>
+    <div {...formContainerStyle}>
+      <div {...cardStyle}>
+        <div {...inputContainerStyle}>
+          <label htmlFor="projName">Project Name</label>
+          <input
+            id="projName"
+            type="text"
+            value={projectName}
+            onChange={(e: any) => HandleProjectNameChanges(e)}
+            {...inputStyle}
+          ></input>
+        </div>
+        <div {...inputContainerStyle}>
+          <label htmlFor="projMembers">Project Members</label>
+          <select
+            id="projMembers"
+            onChange={(e: any) => HandleProjectMembersChanges(e)}
+            {...inputStyle}
+          >
+            <option value="user1">User1</option>
+            <option value="user2">User2</option>
+            <option value="user3">User3</option>
+          </select>
+        </div>
+        <div {...inputContainerStyle}>
+          <label htmlFor="startD">Start Date</label>
+          <input
+            id="startD"
+            type="date"
+            value={startDate}
+            onChange={(e: any) => HandleStartDateChanges(e)}
+            {...inputStyle}
+          ></input>
+        </div>
+        <div {...inputContainerStyle}>
+          <label htmlFor="endD">End Date (Optional)</label>
+          <input
+            id="endD"
+            type="date"
+            value={endDate}
+            onChange={(e: any) => HandleEndDateChanges(e)}
+            {...inputStyle}
+          ></input>
+        </div>
       </div>
-      <div id="right">
-        <label htmlFor="projStatus">Project Status</label>
-        <select
-          id="projStatus"
-          onChange={(e: any) => HandleProjectStatusChanges(e)}
-        >
-          <option value="open">Open</option>
-          <option value="close">Close</option>
-          <option value="inprogress">In Progress</option>
-        </select>
-        <label htmlFor="desc">Description</label>
-        <textarea
-          id="desc"
-          wrap="soft"
-          value={desc}
-          onChange={(e: any) => HandleDescChanges(e)}
-        ></textarea>
-        <button onClick={() => btnCreateClicked()}>Create !</button>
+      <div {...cardStyle}>
+        <div {...inputContainerStyle}>
+          <label htmlFor="projStatus">Project Status</label>
+          <select
+            id="projStatus"
+            onChange={(e: any) => HandleProjectStatusChanges(e)}
+            {...inputStyle}
+          >
+            <option value="open">Open</option>
+            <option value="close">Close</option>
+            <option value="inprogress">In Progress</option>
+          </select>
+        </div>
+        <div {...inputContainerStyle}>
+          <label htmlFor="desc">Description</label>
+          <textarea
+            id="desc"
+            wrap="soft"
+            value={desc}
+            onChange={(e: any) => HandleDescChanges(e)}
+            {...inputStyle}
+          ></textarea>
+        </div>
+        <div {...inputContainerStyle}>
+          <button onClick={() => btnCreateClicked()} {...buttonStyle}>
+            Create !
+          </button>
+        </div>
       </div>
     </div>
   );

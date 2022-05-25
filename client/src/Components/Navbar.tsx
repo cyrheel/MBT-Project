@@ -2,13 +2,13 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import defaultPP from "../Statics/DefaultPP.svg";
-import logo from "../Statics/M6dbc40627f36e2e0dbc4141850ce55f71649942577809.svg";
+import logo from "../Statics/Capture52.svg";
 
 function Navbar(): JSX.Element {
   let navigate = useNavigate();
 
   return (
-    <nav className="flex items-center justify-around leading-tight bg-slate-200 h-20">
+    <nav className="flex items-center justify-around leading-tight h-20">
       <img
         className="logo"
         src={logo}

@@ -10,7 +10,8 @@
 }
 
 .logo {
-  filter: invert(75%) sepia(93%) saturate(2024%) hue-rotate(146deg) brightness(93%) contrast(88%);
+  max-width: 11rem;
+  filter: invert(8%) sepia(100%) saturate(7445%) hue-rotate(248deg) brightness(93%) contrast(144%);
 }
 
 @tailwind base;
