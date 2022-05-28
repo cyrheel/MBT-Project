@@ -1,4 +1,10 @@
 import React, { useState } from "react";
+import {
+  formContainerStyle,
+  inputContainerStyle,
+  inputStyle,
+  labelStyle,
+} from "../Styles/style";
 
 function TicketCreationForm() {
   // Helpers
@@ -69,13 +75,10 @@ function TicketCreationForm() {
 
   // Render
   return (
-    <div className="flex bg-slate-100 justify-evenly h-full">
+    <div {...formContainerStyle}>
       <div id="left" className="flex flex-col w-1/3 items-center">
-        <div className="flex flex-col w-full p-4">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="tskName"
-          >
+        <div {...inputContainerStyle}>
+          <label htmlFor="tskName" {...labelStyle}>
             Name :
           </label>
           <input
@@ -87,12 +90,7 @@ function TicketCreationForm() {
           ></input>
         </div>
         <div className="flex flex-col w-full p-4">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="tskstatus"
-          >
-            Status :
-          </label>
+          <label htmlFor="tskstatus">Status :</label>
           <input
             className="w-full bg-gray-200 text-gray-700 border rounded py-2 leading-tight focus:outline-none focus:bg-white"
             id="tskstatus"

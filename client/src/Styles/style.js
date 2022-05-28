@@ -16,7 +16,7 @@ export const formContainerStyle = {
 };
 
 export const inputContainerStyle = {
-  className: "flex flex-col w-full h-auto items-center",
+  className: "flex flex-col w-full items-center",
 };
 
 export const inputStyle = {
@@ -24,7 +24,9 @@ export const inputStyle = {
     "w-4/5 bg-slate-100 text-gray-700 border rounded py-2 leading-tight focus:outline-none focus:bg-white",
 };
 
-export const labelStyle = {};
+export const labelStyle = {
+  className: "p-2 text-gray-800 text-md font-bold uppercase",
+};
 
 // Other
 
