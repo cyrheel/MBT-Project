@@ -1,4 +1,25 @@
 const db = require('../../db');
+const argon2 = require('argon2');
+
+//DONE : USER IS DONE! ✅ (LOGIN IS MISSING)
+//ERROR : ERRROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR
+//* ---------------- OPTIONS HASHING PASSWORD ---------------- *//
+const hashingOptions = {
+  memoryCost: 2 ** 16,
+  timeCost: 5,
+  type: argon2.argon2id,
+};
+
+//* ---------------- HASH PASSWORD ---------------- *//
+
+const hashPassword = (pianPassword) => {
+  return argon2.hash(pianPassword, hashingOptions);
+};
+
+//* ---------------- CHECK PASSWORD ---------------- *//
+const verifyPassword = (plainPassword, hashedPassword) => {
+  return argon2.verify(hashedPassword, plainPassword, hashingOptions);
+};
 
 export const users = {
   //* ----------------  USER QUERIES  ---------------- *//
@@ -26,9 +47,23 @@ export const users = {
   },
   //* ----------------  USER MUTATIONS  ---------------- *//
   Mutation: {
+    //? CREATE A NEW USER
+    createNewUser: async (_: any, args: any) => {
+      const hashedPassword = await hashPassword(args.hashedPassword);
+      return await db.User.create({
+        data: {
+          id: Number(args.id),
+          name: args.name,
+          email: args.email,
+          hashedPassword,
+          role: args.role,
+        },
+      });
+    },
+
     //? UPDATE A USER
     updateUserById: async (_: any, args: any) => {
-      const user = await db.User.findUnique({
+      await db.User.findUnique({
         where: { id: Number(args.id) },
       });
       return await db.User.update({
@@ -38,6 +73,7 @@ export const users = {
           email: args.email,
           hashedPassword: args.hashedPassword,
           role: args.role,
+          avatar: args.avatar,
         },
       });
     },

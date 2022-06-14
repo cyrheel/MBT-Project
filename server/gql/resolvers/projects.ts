@@ -1,5 +1,6 @@
 const db = require('../../db');
 
+//# : for projects : delete projects / update projects
 export const projects = {
   //* ----------------  PROJECT QUERIES  ---------------- *//
   Query: {
@@ -33,11 +34,7 @@ export const projects = {
         where: {
           id: Number(args.Users.id),
         },
-        include: {
-          Users: true,
-        },
       });
-      console.log(user.id);
       return await db.Project.create({
         data: {
           id: Number(args.id),
@@ -48,9 +45,59 @@ export const projects = {
           status: args.status,
           Project_Picture: args.Project_Picture,
           Users: {
-            connect: {
-              id: user.id,
-            },
+            connect: args.Users.map(({ id }) => {
+              return { id: Number(id) };
+            }),
+          },
+        },
+      });
+    },
+
+    //? UPDATE A PROJECT
+    updateProjectById: async (_: any, args: any) => {
+      return await db.Project.update({
+        where: { id: Number(args.id) },
+        data: {
+          title: args.title,
+          description: args.description,
+          start_time: args.start_time,
+          end_time: args.end_time,
+          status: args.status,
+          Project_Picture: args.Project_Picture,
+        },
+      });
+    },
+
+    //? DELETE A PROJECT
+    deleteProjectById: async (_: any, args: any) => {
+      return await db.Project.delete({
+        where: { id: Number(args.id) },
+      });
+    },
+
+    //? REMOVE USER FROM A PROJECT
+    removeUserFromProject: async (_: any, args: any) => {
+      return await db.Project.update({
+        where: { id: Number(args.id) },
+        data: {
+          Users: {
+            disconnect: args.Users?.map(({ id }) => {
+              return { id: Number(id) };
+            }),
+          },
+        },
+      });
+    },
+
+    //? ASSIGN USER TO A PROJECT
+    assignUserToProject: async (_: any, args: any) => {
+      return await db.Project.update({
+        where: { id: Number(args.id) },
+        data: {
+          Users: {
+            connect: args.Users?.map(({ id }) => {
+              return { id: Number(id) };
+            }),
           },
         },
       });

@@ -10,7 +10,7 @@ const typeDefs = gql`
     name: String!
     email: String!
     hashedPassword: String!
-    role: String!
+    role: String
     #//! Foreign Key
     #//* One To One
     User_Picture: Picture
@@ -107,10 +107,39 @@ const typeDefs = gql`
   input CommentInput {
     id: ID!
   }
+
+  input PictureInput {
+    id: ID!
+  }
   #//* ----------------  END DEFINING INPUTS  ---------------- *//
 
   #//* ----------------  START DEFINING MUTATIONS  ---------------- *//
   type Mutation {
+    #//* ALL FUNCTION FOR USER
+    #//? CREATE A NEW USER
+    createNewUser(
+      id: ID!
+      name: String!
+      email: String!
+      hashedPassword: String!
+      role: String
+    ): User
+
+    #//? UPDATE A USER
+    updateUserById(
+      id: ID!
+      name: String
+      email: String
+      hashedPassword: String
+      role: String
+      picture_id: Int
+      avatar: String
+    ): User
+
+    #//? DELETE A USER
+    deleteUserById(id: ID!): User
+
+    #//* ALL FUNCTION FOR PROJECT
     #//? CREATE A NEW PROJECT
     createNewProject(
       id: ID!
@@ -121,11 +150,32 @@ const typeDefs = gql`
       status: String
       #//! Foreign Key
       #//* One To One
-      #Project_Picture: Project_Picture
+      Project_Picture: PictureInput
       #//* Many To Many
-      Users: UserInput
+      Users: [UserInput]
     ): Project
 
+    #// ? UPDATE A PROJECT
+    updateProjectById(
+      id: ID!
+      title: String
+      description: String
+      start_time: Date
+      end_time: Date
+      status: String
+      Users: [UserInput]
+    ): Project
+
+    #//? DELETE A PROJECT
+    deleteProjectById(id: ID!): Project
+
+    #//? REMOVE USER FROM A PROJECT
+    removeUserFromProject(id: ID!): Project
+
+    #//? ASSIGN USER TO A PROJECT
+    assignUserToProject(id: ID!): Project
+
+    #//* ALL FUNCTIONS FOR TICKET
     #//? CREATE A NEW TICKET
     createNewTicket(
       id: ID!
@@ -146,18 +196,7 @@ const typeDefs = gql`
       Users: [UserInput]
     ): Ticket
 
-    #//? UPDATE A USER
-    updateUserById(
-      id: ID!
-      name: String
-      email: String
-      hashedPassword: String
-      role: String
-      picture_id: Int
-    ): User
-
-    #//? DELETE A USER
-    deleteUserById(id: ID!): User
+    #//? UPDATE A TICKET
     updateTicketById(
       id: ID!
       title: String
@@ -168,8 +207,16 @@ const typeDefs = gql`
       labels: String
       priority: String
       difficulty: String
-      Users: UserInput
     ): Ticket
+
+    #//? REMOVE USER FROM A TICKET
+    removeUserFromTicket(id: ID!, Users: [UserInput]): Ticket
+
+    #//? ASSIGN USER TO A TICKET
+    assignUserToTicket(id: ID!, Users: [UserInput]): Ticket
+
+    #//? DELETE A TICKET
+    deleteTicketById(id: ID!): Ticket
   }
   #//* ----------------  END DEFINING MUTATIONS  ---------------- *//
 `;
