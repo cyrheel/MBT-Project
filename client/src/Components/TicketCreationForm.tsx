@@ -1,316 +1,382 @@
 import React, { useState } from "react";
+import { ApolloError, useMutation } from "@apollo/client";
+import { CREATE_TICKET } from "../Hooks/useCreateTicket";
+import {
+  formContainerStyle,
+  inputContainerStyle,
+  radioInputContainerStyle,
+  inputStyle,
+  labelStyle,
+  radioInputStyle,
+  buttonStyle,
+  errorPageWrapper,
+  customCardStyle,
+  popUpContainerStyle,
+} from "../Styles/style";
 
-function TicketCreationForm() {
-  // Helpers
-  // let today = new Date(Date.now()).toISOString();
-  // today = today.slice(0, 10);
-
+function TicketCreationForm(): JSX.Element {
   // State
   const [tskName, setName] = useState<string>("");
   const [tskStatus, setStatus] = useState<string>("");
   const [tskLabels, setLabels] = useState<string>("");
-  const [tskProject, setProject] = useState<string>(""); // Gonna be Int when db ready
+  const [tskProject, setProject] = useState<string>("");
   const [tskMembers, setMembers] = useState<string>("");
-  const [tskDifficulty, setDifficulty] = useState<number>(1);
-  const [tskUrgence, setUrgence] = useState<number>(1);
+  const [tskDifficulty, setDifficulty] = useState<string>("");
+  const [tskUrgence, setUrgence] = useState<string>("");
   const [tskDesc, setDesc] = useState<string>("");
-  //TODO: view for mockup and DBmodel for time management
+  // eslint-disable-next-line
+  const [addTicket, { data, loading, error }] = useMutation(CREATE_TICKET);
+  const [popUpState, setPopUpState] = useState<boolean>(false);
 
   // Funcs
-  const HandleNameChanges = (e: any): void => {
+  const HandleNameChanges = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
   };
 
-  const HandleStatusChanges = (e: any): void => {
+  const HandleStatusChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setStatus(e.target.value);
   };
 
-  const HandleLabelsChanges = (e: any): void => {
+  const HandleLabelsChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setLabels(e.target.value);
   };
 
-  const HandleProjectChanges = (e: any): void => {
+  const HandleProjectChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setProject(e.target.value);
   };
 
-  const HandleMembersChanges = (e: any): void => {
+  const HandleMembersChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setMembers(e.target.value);
   };
 
-  const HandleDifficultyChanges = (e: any): void => {
+  const HandleDifficultyChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setDifficulty(e.target.value);
   };
 
-  const HandleUrgenceChanges = (e: any): void => {
+  const HandleUrgenceChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setUrgence(e.target.value);
   };
 
-  const HandleDescChanges = (e: any): void => {
+  const HandleDescChanges = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setDesc(e.target.value);
   };
 
-  const btnCreateClicked = (): void => {
-    const newTicket = {
-      title: tskName,
-      description: tskDesc,
-      estimated_time: 0,
-      spent_time: 0,
-      status: tskStatus,
-      labels: tskLabels,
-      priority: tskUrgence,
-      difficulty: tskDifficulty,
-      // project: Type projet
-      projectId: tskProject,
-      ticket_comment: [],
-      ticket_user: tskMembers,
-    };
-    //TODO: Handle Ticket Creation Here (send newTicket w/ GQL to Db)
+  const RenderError = ({ err }: ApolloError | any): JSX.Element => {
+    return (
+      <div {...errorPageWrapper}>
+        <h1>Error in Ticket creation :/</h1>
+        {err ? <p>{err.message}</p> : <p>"No error msg"</p>}
+        <button
+          onClick={() => window.location.replace(window.location.toString())}
+          {...buttonStyle}
+        >
+          {"<-"}
+        </button>
+      </div>
+    );
+  };
+
+  const RenderLoading = (): JSX.Element => {
+    return <h1>Loading...</h1>;
+  };
+
+  const RenderValidationPopUp = (): JSX.Element => {
+    return (
+      <div {...popUpContainerStyle}>
+        <div className="flex justify-end pr-3">
+          <button onClick={() => setPopUpState(!popUpState)}>X</button>
+        </div>
+        <h1 {...labelStyle}>Ticket created successfully !</h1>
+      </div>
+    );
   };
 
   // Render
+  if (error) {
+    return <RenderError err={error} />;
+  }
+  if (loading) {
+    return <RenderLoading />;
+  }
   return (
-    <div className="flex bg-slate-100 justify-evenly h-full">
-      <div id="left" className="flex flex-col w-1/3 items-center">
-        <div className="flex flex-col w-full p-4">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="tskName"
-          >
+    <form
+      onSubmit={async (e) => {
+        // TODO: type params and func return
+        e.preventDefault();
+        const newTicketID = "5";
+        await addTicket({
+          variables: {
+            createNewTicketId: newTicketID,
+            title: tskName,
+            users: [
+              {
+                id: tskMembers,
+              },
+            ],
+            difficulty: tskDifficulty,
+            priority: tskUrgence,
+            labels: tskLabels,
+            status: tskStatus,
+            description: tskDesc,
+            projectId: parseInt(tskProject),
+          },
+        });
+        setName("");
+        setStatus("");
+        setLabels("");
+        setProject("");
+        setMembers("");
+        setDifficulty("");
+        setUrgence("");
+        setDesc("");
+        setPopUpState(!popUpState);
+        // TODO trigger l'affichage d'une popup pour dire que le ticket a bien été créé
+      }}
+      {...formContainerStyle}
+    >
+      {popUpState ? RenderValidationPopUp() : null}
+      <div id="left" {...customCardStyle}>
+        <div {...inputContainerStyle}>
+          <label htmlFor="tskName" {...labelStyle}>
             Name :
           </label>
           <input
-            className="w-full bg-gray-200 text-gray-700 border rounded py-2 leading-tight focus:outline-none focus:bg-white"
             id="tskName"
             type="text"
             value={tskName}
             onChange={(e: any) => HandleNameChanges(e)}
+            {...inputStyle}
           ></input>
         </div>
-        <div className="flex flex-col w-full p-4">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="tskstatus"
-          >
+        <div {...inputContainerStyle}>
+          <label htmlFor="tskstatus" {...labelStyle}>
             Status :
           </label>
           <input
-            className="w-full bg-gray-200 text-gray-700 border rounded py-2 leading-tight focus:outline-none focus:bg-white"
             id="tskstatus"
             type="text"
             value={tskStatus}
             onChange={(e: any) => HandleStatusChanges(e)}
+            {...inputStyle}
           ></input>
         </div>
-        <div className="flex flex-col w-full p-4">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="tsklabels"
-          >
+        <div {...inputContainerStyle}>
+          <label htmlFor="tsklabels" {...labelStyle}>
             Labels:
           </label>
           <input
-            className="w-full bg-gray-200 text-gray-700 border rounded py-2 leading-tight focus:outline-none focus:bg-white"
             id="tsklabels"
             type="text"
             value={tskLabels}
             onChange={(e: any) => HandleLabelsChanges(e)}
+            {...inputStyle}
           ></input>
         </div>
       </div>
-      <div id="middle" className="flex flex-col w-1/3 items-center">
-        <div className="flex flex-col w-full p-4">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="tskProject"
-          >
+      <div id="middle" {...customCardStyle}>
+        <div {...inputContainerStyle}>
+          <label htmlFor="tskProject" {...labelStyle}>
             Select Project
           </label>
           <select
             id="tskProject"
             onChange={(e: any) => HandleProjectChanges(e)}
+            {...inputStyle}
           >
-            <option value="proj1">Projet A</option>
-            <option value="proj2">Projet B</option>
-            <option value="showmore">show more...</option>
+            <option value="1">Projet A</option>
+            <option value="2">Projet B</option>
+            <option value="3">show more...</option>
           </select>
         </div>
-        <div className="flex flex-col w-full p-4">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="tskMembers"
-          >
+        <div {...inputContainerStyle}>
+          <label htmlFor="tskMembers" {...labelStyle}>
             Select Members
           </label>
           <select
             id="tskMembers"
             onChange={(e: any) => HandleMembersChanges(e)}
+            {...inputStyle}
           >
-            <option value="wip">A voir pour mettre de vrais user ?</option>
-            <option value="wip2">ça serait cool d'avoir leur pp aussi</option>
-            <option value="wip3">trkl c'est du detail</option>
+            <option value="1">User 1</option>
+            <option value="2">User 2</option>
+            <option value="3">User 3</option>
           </select>
         </div>
-        <div id="difficultyRadio" className="flex flex-col w-full p-4">
-          <h5>Select Difficulty</h5>
-          <div className="flex w-full">
-            <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              htmlFor="dif1"
-            >
-              1
-            </label>
-            <input
-              id="dif1"
-              type="radio"
-              name="difficulty"
-              value={1}
-              onChange={(e: any) => HandleDifficultyChanges(e)}
-            ></input>
-            <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              htmlFor="dif2"
-            >
-              2
-            </label>
-            <input
-              id="dif2"
-              type="radio"
-              name="difficulty"
-              value={2}
-              onChange={(e: any) => HandleDifficultyChanges(e)}
-            ></input>
-            <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              htmlFor="dif3"
-            >
-              3
-            </label>
-            <input
-              id="dif3"
-              type="radio"
-              name="difficulty"
-              value={3}
-              onChange={(e: any) => HandleDifficultyChanges(e)}
-            ></input>
-            <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              htmlFor="dif4"
-            >
-              4
-            </label>
-            <input
-              id="dif4"
-              type="radio"
-              name="difficulty"
-              value={4}
-              onChange={(e: any) => HandleDifficultyChanges(e)}
-            ></input>
-            <label
-              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-              htmlFor="dif5"
-            >
-              5
-            </label>
-            <input
-              id="dif5"
-              type="radio"
-              name="difficulty"
-              value={5}
-              onChange={(e: any) => HandleDifficultyChanges(e)}
-            ></input>
+        <div id="difficultyRadio" {...inputContainerStyle}>
+          <h5 {...labelStyle}>Select Difficulty</h5>
+          <div className="flex w-3/4">
+            <div {...radioInputContainerStyle}>
+              <label htmlFor="dif1" {...labelStyle}>
+                1
+              </label>
+              <input
+                id="dif1"
+                type="radio"
+                name="difficulty"
+                value={"1"}
+                onChange={(e: any) => HandleDifficultyChanges(e)}
+                {...radioInputStyle}
+              ></input>
+            </div>
+            <div {...radioInputContainerStyle}>
+              <label htmlFor="dif2" {...labelStyle}>
+                2
+              </label>
+              <input
+                id="dif2"
+                type="radio"
+                name="difficulty"
+                value={"2"}
+                onChange={(e: any) => HandleDifficultyChanges(e)}
+                {...radioInputStyle}
+              ></input>
+            </div>
+            <div {...radioInputContainerStyle}>
+              <label htmlFor="dif3" {...labelStyle}>
+                3
+              </label>
+              <input
+                id="dif3"
+                type="radio"
+                name="difficulty"
+                value={"3"}
+                onChange={(e: any) => HandleDifficultyChanges(e)}
+                {...radioInputStyle}
+              ></input>
+            </div>
+            <div {...radioInputContainerStyle}>
+              <label htmlFor="dif4" {...labelStyle}>
+                4
+              </label>
+              <input
+                id="dif4"
+                type="radio"
+                name="difficulty"
+                value={"4"}
+                onChange={(e: any) => HandleDifficultyChanges(e)}
+                {...radioInputStyle}
+              ></input>
+            </div>
+            <div {...radioInputContainerStyle}>
+              <label htmlFor="dif5" {...labelStyle}>
+                5
+              </label>
+              <input
+                id="dif5"
+                type="radio"
+                name="difficulty"
+                value={"5"}
+                onChange={(e: any) => HandleDifficultyChanges(e)}
+                {...radioInputStyle}
+              ></input>
+            </div>
           </div>
         </div>
-        <div id="urgenceRadio" className="flex">
-          <h5>Select Urgence</h5>
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="urg1"
-          >
-            1
-          </label>
-          <input
-            id="urg1"
-            type="radio"
-            name="urgence"
-            value={1}
-            onChange={(e: any) => HandleUrgenceChanges(e)}
-          ></input>
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="urg2"
-          >
-            2
-          </label>
-          <input
-            id="urg2"
-            type="radio"
-            name="urgence"
-            value={2}
-            onChange={(e: any) => HandleUrgenceChanges(e)}
-          ></input>
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="urg3"
-          >
-            3
-          </label>
-          <input
-            id="urg3"
-            type="radio"
-            name="urgence"
-            value={3}
-            onChange={(e: any) => HandleUrgenceChanges(e)}
-          ></input>
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="urg4"
-          >
-            4
-          </label>
-          <input
-            id="urg4"
-            type="radio"
-            name="urgence"
-            value={4}
-            onChange={(e: any) => HandleUrgenceChanges(e)}
-          ></input>
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="urg5"
-          >
-            5
-          </label>
-          <input
-            id="urg5"
-            type="radio"
-            name="urgence"
-            value={5}
-            onChange={(e: any) => HandleUrgenceChanges(e)}
-          ></input>
+        <div id="urgenceRadio" {...inputContainerStyle}>
+          <h5 {...labelStyle}>Select Urgence</h5>
+          <div className="flex w-3/4">
+            <div {...radioInputContainerStyle}>
+              <label htmlFor="urg1" {...labelStyle}>
+                1
+              </label>
+              <input
+                id="urg1"
+                type="radio"
+                name="urgence"
+                value={"1"}
+                onChange={(e: any) => HandleUrgenceChanges(e)}
+                {...radioInputStyle}
+              ></input>
+            </div>
+            <div {...radioInputContainerStyle}>
+              <label htmlFor="urg2" {...labelStyle}>
+                2
+              </label>
+              <input
+                id="urg2"
+                type="radio"
+                name="urgence"
+                value={"2"}
+                onChange={(e: any) => HandleUrgenceChanges(e)}
+                {...radioInputStyle}
+              ></input>
+            </div>
+            <div {...radioInputContainerStyle}>
+              <label htmlFor="urg3" {...labelStyle}>
+                3
+              </label>
+              <input
+                id="urg3"
+                type="radio"
+                name="urgence"
+                value={"3"}
+                onChange={(e: any) => HandleUrgenceChanges(e)}
+                {...radioInputStyle}
+              ></input>
+            </div>
+            <div {...radioInputContainerStyle}>
+              <label htmlFor="urg4" {...labelStyle}>
+                4
+              </label>
+              <input
+                id="urg4"
+                type="radio"
+                name="urgence"
+                value={"4"}
+                onChange={(e: any) => HandleUrgenceChanges(e)}
+                {...radioInputStyle}
+              ></input>
+            </div>
+            <div {...radioInputContainerStyle}>
+              <label htmlFor="urg5" {...labelStyle}>
+                5
+              </label>
+              <input
+                id="urg5"
+                type="radio"
+                name="urgence"
+                value={"5"}
+                onChange={(e: any) => HandleUrgenceChanges(e)}
+                {...radioInputStyle}
+              ></input>
+            </div>
+          </div>
         </div>
         {/*
           TODO: add time management (maybe?)
         */}
       </div>
-      <div id="right" className="flex flex-col w-1/3 items-center">
-        <div className="flex flex-col w-full p-4">
-          <label
-            className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="tckDesc"
-          >
+      <div id="right" {...customCardStyle}>
+        <div {...inputContainerStyle}>
+          <label htmlFor="tckDesc" {...labelStyle}>
             Description :
           </label>
           <textarea
-            className="w-full bg-gray-200 text-gray-700 border rounded py-2 leading-tight focus:outline-none focus:bg-white"
             id="tckDesc"
             value={tskDesc}
             onChange={(e: any) => HandleDescChanges(e)}
+            {...inputStyle}
           ></textarea>
         </div>
-
-        <button onClick={() => btnCreateClicked()}>Create !</button>
+        <div {...inputContainerStyle}>
+          <button type="submit" {...buttonStyle}>
+            Create !
+          </button>
+        </div>
       </div>
-    </div>
+    </form>
   );
 }
 

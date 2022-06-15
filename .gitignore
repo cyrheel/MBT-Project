@@ -2,5 +2,8 @@ node_modules
 build
 dist
 ./history
-yarn-error.log
+yarn-debug.log*
+yarn-error.log*
+yarn.lock
 .env-sample
+.DS_Store

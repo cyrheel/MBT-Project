@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
 
-function InscriptionPage() {
+function InscriptionPage(): JSX.Element {
   return (
     <div>
       <Navbar />

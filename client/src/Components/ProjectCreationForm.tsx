@@ -1,108 +1,197 @@
 import React, { useState } from "react";
-
-// Interfaces
+import { ApolloError, useMutation } from "@apollo/client";
+import { CREATE_PROJECT } from "../Hooks/useCreateProject";
+import {
+  formContainerStyle,
+  cardStyle,
+  inputStyle,
+  labelStyle,
+  buttonStyle,
+  inputContainerStyle,
+} from "../Styles/style";
 
 function ProjectCreationForm(): JSX.Element {
-  // Helpers
-  let today = new Date(Date.now()).toISOString();
-  today = today.slice(0, 10);
-
-  // States
+  // State
   const [projectName, setProjectName] = useState<string>("");
   const [projectStatus, setProjectStauts] = useState<string>("");
-  const [projectMembers, setProjectMembers] = useState<string>("");
-  const [startDate, setStartDate] = useState<string>(today);
-  const [endDate, setEndDate] = useState<string>(today);
+  const [projectMembers, setProjectMembers] = useState<
+    number | number[] | undefined //TODO: voir pour typer les ID ?
+  >(undefined);
+  const [startDate, setStartDate] = useState<Date>(new Date(Date.now()));
+  const [endDate, setEndDate] = useState<Date>(new Date(Date.now()));
   const [desc, setDesc] = useState<string>("");
+  // eslint-disable-next-line
+  const [addProject, { data, loading, error }] = useMutation(CREATE_PROJECT);
 
   // Funcs
-  const HandleProjectNameChanges = (e: any): void => {
+  const HandleProjectNameChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setProjectName(e.target.value);
   };
-  const HandleProjectStatusChanges = (e: any): void => {
+
+  const HandleProjectStatusChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setProjectStauts(e.target.value);
   };
-  const HandleProjectMembersChanges = (e: any): void => {
-    setProjectMembers(e.target.value);
+
+  const HandleProjectMembersChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const newID = parseInt(e.target.value);
+    setProjectMembers(newID);
   };
-  const HandleStartDateChanges = (e: any): void => {
-    setStartDate(e.target.value);
+
+  const HandleStartDateChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const newDate = new Date(e.target.value);
+    setStartDate(newDate);
   };
-  const HandleEndDateChanges = (e: any): void => {
-    setEndDate(e.target.value);
+
+  const HandleEndDateChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
+    const newDate = new Date(e.target.value);
+    setEndDate(newDate);
   };
-  const HandleDescChanges = (e: any): void => {
+
+  const HandleDescChanges = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setDesc(e.target.value);
   };
-  const btnCreateClicked = (): void => {
-    const newProject = {
-      title: projectName,
-      description: desc,
-      start_time: startDate,
-      end_time: endDate,
-      status: projectStatus,
-      project_user: projectMembers,
-      // project_ticket:
-      // project_picture
-    };
-    //TODO: Handle Project Creation Here (send all State to GQL)
+
+  const RenderError = (err: ApolloError | any): JSX.Element => {
+    return (
+      <div>
+        <p>Error in project creation :/</p>
+        <p>{err ? err.message : "No error msg"}</p>
+      </div>
+    );
+  };
+  const RenderLoading = (): JSX.Element => {
+    return <p>Loading...</p>;
   };
 
   // Render
+  if (error) {
+    return <RenderError err={error} />;
+  }
+  if (loading) {
+    return <RenderLoading />;
+  }
   return (
-    <div id="form">
-      <div id="left">
-        <label htmlFor="projName">Project Name</label>
-        <input
-          id="projName"
-          type="text"
-          value={projectName}
-          onChange={(e: any) => HandleProjectNameChanges(e)}
-        ></input>
-        <label htmlFor="projMembers">Project Members</label>
-        <select
-          id="projMembers"
-          onChange={(e: any) => HandleProjectMembersChanges(e)}
-        >
-          <option value="wip">A voir pour mettre de vrais user ?</option>
-          <option value="wip2">ça serait cool d'avoir leur pp aussi</option>
-          <option value="wip3">trkl c'est du detail</option>
-        </select>
-        <label htmlFor="startD">Start Date</label>
-        <input
-          id="startD"
-          type="date"
-          value={startDate}
-          onChange={(e: any) => HandleStartDateChanges(e)}
-        ></input>
-        <label htmlFor="endD">End Date</label>
-        <input
-          id="endD"
-          type="date"
-          value={endDate}
-          onChange={(e: any) => HandleEndDateChanges(e)}
-        ></input>
+    <form
+      onSubmit={(e) => {
+        // TODO: type params and func return
+        e.preventDefault();
+        addProject({
+          variables: {
+            id: "$createNewProjectId",
+            title: projectName,
+            description: desc,
+            start_time: startDate,
+            end_time: endDate,
+            status: projectStatus,
+            user_id: { id: projectMembers },
+          },
+        });
+      }}
+      {...formContainerStyle}
+    >
+      <div {...cardStyle}>
+        <div {...inputContainerStyle}>
+          <label htmlFor="projName" {...labelStyle}>
+            Project Name :
+          </label>
+          <input
+            id="projName"
+            type="text"
+            value={projectName}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+              HandleProjectNameChanges(e)
+            }
+            {...inputStyle}
+          ></input>
+        </div>
+        <div {...inputContainerStyle}>
+          <label htmlFor="projMembers" {...labelStyle}>
+            Project Members
+          </label>
+          <select
+            id="projMembers"
+            // TODO: type params and func return
+            onChange={(e: any) => HandleProjectMembersChanges(e)}
+            {...inputStyle}
+          >
+            <option value={1}>User1</option>
+            <option value={2}>User2</option>
+            <option value={3}>User3</option>
+          </select>
+        </div>
+        <div {...inputContainerStyle}>
+          <label htmlFor="startD" {...labelStyle}>
+            Start Date
+          </label>
+          <input
+            id="startD"
+            type="date"
+            value={startDate.toString()}
+            // TODO: type params and func return
+            onChange={(e: any) => HandleStartDateChanges(e)}
+            {...inputStyle}
+          ></input>
+        </div>
+        <div {...inputContainerStyle}>
+          <label htmlFor="endD" {...labelStyle}>
+            End Date (Optional)
+          </label>
+          <input
+            id="endD"
+            type="date"
+            // TODO: type params and func return
+            value={endDate.toString()}
+            onChange={(e: any) => HandleEndDateChanges(e)}
+            {...inputStyle}
+          ></input>
+        </div>
       </div>
-      <div id="right">
-        <label htmlFor="projStatus">Project Status</label>
-        <select
-          id="projStatus"
-          onChange={(e: any) => HandleProjectStatusChanges(e)}
-        >
-          <option value="open">Open</option>
-          <option value="close">Close</option>
-          <option value="inprogress">In Progress</option>
-        </select>
-        <label htmlFor="desc">Description</label>
-        <textarea
-          id="desc"
-          wrap="soft"
-          value={desc}
-          onChange={(e: any) => HandleDescChanges(e)}
-        ></textarea>
-        <button onClick={() => btnCreateClicked()}>Create !</button>
+      <div {...cardStyle}>
+        <div {...inputContainerStyle}>
+          <label htmlFor="projStatus" {...labelStyle}>
+            Project Status
+          </label>
+          <select
+            id="projStatus"
+            // TODO: type params and func return
+            onChange={(e: any) => HandleProjectStatusChanges(e)}
+            {...inputStyle}
+          >
+            <option value="open">Open</option>
+            <option value="close">Close</option>
+            <option value="inprogress">In Progress</option>
+          </select>
+        </div>
+        <div {...inputContainerStyle}>
+          <label htmlFor="desc" {...labelStyle}>
+            Description
+          </label>
+          <textarea
+            id="desc"
+            wrap="soft"
+            value={desc}
+            // TODO: type params and func return
+            onChange={(e: any) => HandleDescChanges(e)}
+            {...inputStyle}
+          ></textarea>
+        </div>
+        <div {...inputContainerStyle}>
+          <button type="submit" {...buttonStyle}>
+            Create !
+          </button>
+        </div>
       </div>
-    </div>
+    </form>
   );
 }
 

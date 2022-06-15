@@ -1,19 +1,13 @@
 import React from "react";
 import IProjet from "../Interfaces/IProject";
+import ProjectItem from "./ProjectItem";
+import { projectListWrapper } from "../Styles/style";
 
-const ProjectList = (props: any) => {
+const ProjectList = (props: IProjet[] | any): JSX.Element => {
   return (
-    <div>
+    <div {...projectListWrapper}>
       {props.projects.map((project: IProjet) => (
-        <div key={project.id}>
-          <p>{project.title}</p>
-          <p>{project.description}</p>
-          <div>
-            <p>{project.start_time.toString()}</p>
-            <p>{project.end_time?.toString()}</p>
-            <p>{project.status}</p>
-          </div>
-        </div>
+        <ProjectItem {...project} key={project.id} />
       ))}
     </div>
   );

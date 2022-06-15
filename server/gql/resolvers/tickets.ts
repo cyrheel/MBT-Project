@@ -1,5 +1,7 @@
 const db = require('../../db');
 
+//# : TICKETS DONE ✅!
+
 export const tickets = {
   //* ----------------  TICKET QUERIES  ---------------- *//
   Query: {
@@ -49,11 +51,9 @@ export const tickets = {
         },
       });
     },
+
     //? UPDATE A TICKET
     updateTicketById: async (_: any, args: any) => {
-      const user = await db.User.findUnique({
-        where: { id: Number(args.Users.id) },
-      });
       return await db.Ticket.update({
         where: { id: Number(args.id) },
         data: {
@@ -65,10 +65,40 @@ export const tickets = {
           labels: args.labels,
           priority: args.priority,
           difficulty: args.difficulty,
+        },
+      });
+    },
+
+    //? DELETE A TICKET
+    deleteTicketById: async (_: any, args: any) => {
+      return await db.Ticket.delete({
+        where: { id: Number(args.id) },
+      });
+    },
+
+    //? REMOVE USER FROM A TICKET
+    removeUserFromTicket: async (_: any, args: any) => {
+      return await db.Ticket.update({
+        where: { id: Number(args.id) },
+        data: {
           Users: {
-            connect: {
-              id: user.id,
-            },
+            disconnect: args.Users?.map(({ id }) => {
+              return { id: Number(id) };
+            }),
+          },
+        },
+      });
+    },
+
+    //? ASSIGN USER TO A TICKET
+    assignUserToTicket: async (_: any, args: any) => {
+      return await db.Ticket.update({
+        where: { id: Number(args.id) },
+        data: {
+          Users: {
+            connect: args.Users?.map(({ id }) => {
+              return { id: Number(id) };
+            }),
           },
         },
       });
