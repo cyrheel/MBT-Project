@@ -13,7 +13,7 @@ model User {
   name           String    @db.VarChar(255)
   email          String    @db.VarChar(255)
   hashedPassword String    @db.VarChar(255)
-  role           String    @db.VarChar(255)
+  role           String    @default("user") @db.VarChar(255)
   //! Foreign Key
   //* One To One
   User_Picture   Picture?  @relation(fields: [picture_id], references: [id])
