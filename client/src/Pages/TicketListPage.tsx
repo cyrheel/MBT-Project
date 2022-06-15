@@ -1,6 +1,6 @@
 import React from "react";
 
-function TicketListPage() {
+function TicketListPage(): JSX.Element {
   return <p>TicketList Page :)</p>;
 }
 

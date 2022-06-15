@@ -1,7 +1,7 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
 
-function UserParamsPage() {
+function UserParamsPage(): JSX.Element {
   return (
     <div>
       <Navbar />
