@@ -2,7 +2,6 @@
   "compilerOptions": {
     "outDir": "./build",
     "target": "es6",
-
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
