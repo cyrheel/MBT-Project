@@ -4,5 +4,6 @@ dist
 ./history
 yarn-debug.log*
 yarn-error.log*
+yarn.lock
 .env-sample
 .DS_Store
