@@ -2,7 +2,7 @@ const { gql } = require('apollo-server');
 import { GraphQLScalarType } from 'graphql';
 const db = require('../db');
 
-const typeDefs = gql`
+export const typeDefs = gql`
   scalar Date
   #//* ----------------  START DEFINING TYPES  ---------------- *//
   type User {
@@ -92,6 +92,7 @@ const typeDefs = gql`
   #//* ----------------  END DEFINING QUERIES  ---------------- *//
 
   #//* ----------------  START DEFINING INPUTS  ---------------- *//
+
   input UserInput {
     id: ID!
   }
@@ -163,17 +164,16 @@ const typeDefs = gql`
       start_time: Date
       end_time: Date
       status: String
-      Users: [UserInput]
     ): Project
 
     #//? DELETE A PROJECT
     deleteProjectById(id: ID!): Project
 
     #//? REMOVE USER FROM A PROJECT
-    removeUserFromProject(id: ID!): Project
+    removeUserFromProject(id: ID!, Users: [UserInput]): Project
 
     #//? ASSIGN USER TO A PROJECT
-    assignUserToProject(id: ID!): Project
+    assignUserToProject(id: ID!, Users: [UserInput]): Project
 
     #//* ALL FUNCTIONS FOR TICKET
     #//? CREATE A NEW TICKET
@@ -230,8 +230,6 @@ const dateScalar = new GraphQLScalarType({
     return value.toISOString();
   },
 });
-
-export default typeDefs;
 
 /*
 {

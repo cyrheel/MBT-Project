@@ -1,6 +1,7 @@
 const db = require('../../db');
+import IUser from '../Interfaces/IUsers';
 
-//# : TICKETS DONE ✅!
+//DONE : TICKETS DONE ✅!
 
 export const tickets = {
   //* ----------------  TICKET QUERIES  ---------------- *//
@@ -44,7 +45,7 @@ export const tickets = {
           difficulty: args.difficulty,
           projectId: Number(args.projectId),
           Users: {
-            connect: args.Users.map(({ id }) => {
+            connect: args.Users.map(({ id }: any) => {
               return { id: Number(id) };
             }),
           },
@@ -82,7 +83,7 @@ export const tickets = {
         where: { id: Number(args.id) },
         data: {
           Users: {
-            disconnect: args.Users?.map(({ id }) => {
+            disconnect: args.Users?.map(({ id }: IUser) => {
               return { id: Number(id) };
             }),
           },
@@ -96,7 +97,7 @@ export const tickets = {
         where: { id: Number(args.id) },
         data: {
           Users: {
-            connect: args.Users?.map(({ id }) => {
+            connect: args.Users?.map(({ id }: IUser) => {
               return { id: Number(id) };
             }),
           },

@@ -2,7 +2,8 @@ const db = require('../../db');
 const argon2 = require('argon2');
 
 //DONE : USER IS DONE! ✅ (LOGIN IS MISSING)
-//ERROR : ERRROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR
+//. : ERRROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR
+
 //* ---------------- OPTIONS HASHING PASSWORD ---------------- *//
 const hashingOptions = {
   memoryCost: 2 ** 16,
@@ -12,12 +13,12 @@ const hashingOptions = {
 
 //* ---------------- HASH PASSWORD ---------------- *//
 
-const hashPassword = (pianPassword) => {
-  return argon2.hash(pianPassword, hashingOptions);
+const hashPassword = (plainPassword: string) => {
+  return argon2.hash(plainPassword, hashingOptions);
 };
 
 //* ---------------- CHECK PASSWORD ---------------- *//
-const verifyPassword = (plainPassword, hashedPassword) => {
+const verifyPassword = (plainPassword: string, hashedPassword: string) => {
   return argon2.verify(hashedPassword, plainPassword, hashingOptions);
 };
 
