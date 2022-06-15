@@ -2,7 +2,8 @@ const db = require('../../db');
 const argon2 = require('argon2');
 
 //DONE : USER IS DONE! ✅ (LOGIN IS MISSING)
-//ERROR : ERRROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR
+//. : ERRROOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOR
+
 //* ---------------- OPTIONS HASHING PASSWORD ---------------- *//
 const hashingOptions = {
   memoryCost: 2 ** 16,

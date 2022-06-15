@@ -1,6 +1,6 @@
 const db = require('../../db');
 
-//# : for projects : delete projects / update projects
+//TODO : for projects : delete projects / update projects
 export const projects = {
   //* ----------------  PROJECT QUERIES  ---------------- *//
   Query: {

@@ -92,6 +92,7 @@ const typeDefs = gql`
   #//* ----------------  END DEFINING QUERIES  ---------------- *//
 
   #//* ----------------  START DEFINING INPUTS  ---------------- *//
+
   input UserInput {
     id: ID!
   }
@@ -163,7 +164,6 @@ const typeDefs = gql`
       start_time: Date
       end_time: Date
       status: String
-      Users: [UserInput]
     ): Project
 
     #//? DELETE A PROJECT

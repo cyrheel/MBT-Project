@@ -1,6 +1,8 @@
+import { isArray } from 'util';
+
 const db = require('../../db');
 
-//# : TICKETS DONE ✅!
+//DONE : TICKETS DONE ✅!
 
 export const tickets = {
   //* ----------------  TICKET QUERIES  ---------------- *//
@@ -96,8 +98,9 @@ export const tickets = {
         where: { id: Number(args.id) },
         data: {
           Users: {
-            connect: args.Users?.map(({ id }) => {
-              return { id: Number(id) };
+            connect: args.Users?.map((user) => {
+              console.log(user);
+              return { id: Number(user.id) };
             }),
           },
         },
