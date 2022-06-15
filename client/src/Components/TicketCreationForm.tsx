@@ -9,13 +9,10 @@ import {
   labelStyle,
   radioInputStyle,
   buttonStyle,
+  errorPageWrapper,
+  customCardStyle,
+  popUpContainerStyle,
 } from "../Styles/style";
-
-// custom the default styles of the card style
-const cardStyle = {
-  className:
-    "flex flex-col w-1/4 h-3/4 bg-slate-200 items-center justify-evenly mt-2 border-4 border-solid border-blue-600 rounded-xl shadow-xl",
-};
 
 function TicketCreationForm(): JSX.Element {
   // State
@@ -29,6 +26,7 @@ function TicketCreationForm(): JSX.Element {
   const [tskDesc, setDesc] = useState<string>("");
   // eslint-disable-next-line
   const [addTicket, { data, loading, error }] = useMutation(CREATE_TICKET);
+  const [popUpState, setPopUpState] = useState<boolean>(false);
 
   // Funcs
   const HandleNameChanges = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -75,17 +73,34 @@ function TicketCreationForm(): JSX.Element {
     setDesc(e.target.value);
   };
 
-  const RenderError = (err: ApolloError | any): JSX.Element => {
+  const RenderError = ({ err }: ApolloError | any): JSX.Element => {
     return (
-      <div>
-        <p>Error in Ticket creation :/</p>
-        <p>{err ? err.message : "No error msg"}</p>
+      <div {...errorPageWrapper}>
+        <h1>Error in Ticket creation :/</h1>
+        {err ? <p>{err.message}</p> : <p>"No error msg"</p>}
+        <button
+          onClick={() => window.location.replace(window.location.toString())}
+          {...buttonStyle}
+        >
+          {"<-"}
+        </button>
       </div>
     );
   };
 
   const RenderLoading = (): JSX.Element => {
-    return <p>Loading...</p>;
+    return <h1>Loading...</h1>;
+  };
+
+  const RenderValidationPopUp = (): JSX.Element => {
+    return (
+      <div {...popUpContainerStyle}>
+        <div className="flex justify-end pr-3">
+          <button onClick={() => setPopUpState(!popUpState)}>X</button>
+        </div>
+        <h1 {...labelStyle}>Ticket created successfully !</h1>
+      </div>
+    );
   };
 
   // Render
@@ -100,7 +115,7 @@ function TicketCreationForm(): JSX.Element {
       onSubmit={async (e) => {
         // TODO: type params and func return
         e.preventDefault();
-        const newTicketID = "2";
+        const newTicketID = "5";
         await addTicket({
           variables: {
             createNewTicketId: newTicketID,
@@ -126,11 +141,13 @@ function TicketCreationForm(): JSX.Element {
         setDifficulty("");
         setUrgence("");
         setDesc("");
+        setPopUpState(!popUpState);
         // TODO trigger l'affichage d'une popup pour dire que le ticket a bien été créé
       }}
       {...formContainerStyle}
     >
-      <div id="left" {...cardStyle}>
+      {popUpState ? RenderValidationPopUp() : null}
+      <div id="left" {...customCardStyle}>
         <div {...inputContainerStyle}>
           <label htmlFor="tskName" {...labelStyle}>
             Name :
@@ -168,7 +185,7 @@ function TicketCreationForm(): JSX.Element {
           ></input>
         </div>
       </div>
-      <div id="middle" {...cardStyle}>
+      <div id="middle" {...customCardStyle}>
         <div {...inputContainerStyle}>
           <label htmlFor="tskProject" {...labelStyle}>
             Select Project
@@ -341,9 +358,9 @@ function TicketCreationForm(): JSX.Element {
           TODO: add time management (maybe?)
         */}
       </div>
-      <div id="right" {...cardStyle}>
-        <div className="flex flex-col w-full p-4">
-          <label {...labelStyle} htmlFor="tckDesc">
+      <div id="right" {...customCardStyle}>
+        <div {...inputContainerStyle}>
+          <label htmlFor="tckDesc" {...labelStyle}>
             Description :
           </label>
           <textarea
@@ -353,9 +370,11 @@ function TicketCreationForm(): JSX.Element {
             {...inputStyle}
           ></textarea>
         </div>
-        <button type="submit" {...buttonStyle}>
-          Create !
-        </button>
+        <div {...inputContainerStyle}>
+          <button type="submit" {...buttonStyle}>
+            Create !
+          </button>
+        </div>
       </div>
     </form>
   );
