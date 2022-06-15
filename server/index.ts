@@ -1,4 +1,4 @@
-import typeDefs from './gql/schema';
+import { typeDefs } from './gql/schema';
 import { projects } from './gql/resolvers/projects';
 import { tickets } from './gql/resolvers/tickets';
 import { users } from './gql/resolvers/users';

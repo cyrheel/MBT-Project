@@ -13,12 +13,12 @@ const hashingOptions = {
 
 //* ---------------- HASH PASSWORD ---------------- *//
 
-const hashPassword = (pianPassword) => {
-  return argon2.hash(pianPassword, hashingOptions);
+const hashPassword = (plainPassword: string) => {
+  return argon2.hash(plainPassword, hashingOptions);
 };
 
 //* ---------------- CHECK PASSWORD ---------------- *//
-const verifyPassword = (plainPassword, hashedPassword) => {
+const verifyPassword = (plainPassword: string, hashedPassword: string) => {
   return argon2.verify(hashedPassword, plainPassword, hashingOptions);
 };
 

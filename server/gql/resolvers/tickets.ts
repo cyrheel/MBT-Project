@@ -1,6 +1,5 @@
-import { isArray } from 'util';
-
 const db = require('../../db');
+import IUser from '../Interfaces/IUsers';
 
 //DONE : TICKETS DONE ✅!
 
@@ -46,7 +45,7 @@ export const tickets = {
           difficulty: args.difficulty,
           projectId: Number(args.projectId),
           Users: {
-            connect: args.Users.map(({ id }) => {
+            connect: args.Users.map(({ id }: any) => {
               return { id: Number(id) };
             }),
           },
@@ -84,7 +83,7 @@ export const tickets = {
         where: { id: Number(args.id) },
         data: {
           Users: {
-            disconnect: args.Users?.map(({ id }) => {
+            disconnect: args.Users?.map(({ id }: IUser) => {
               return { id: Number(id) };
             }),
           },
@@ -98,9 +97,8 @@ export const tickets = {
         where: { id: Number(args.id) },
         data: {
           Users: {
-            connect: args.Users?.map((user) => {
-              console.log(user);
-              return { id: Number(user.id) };
+            connect: args.Users?.map(({ id }: IUser) => {
+              return { id: Number(id) };
             }),
           },
         },

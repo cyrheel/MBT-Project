@@ -1,4 +1,5 @@
 const db = require('../../db');
+import IUsers from '../Interfaces/IUsers';
 
 //TODO : for projects : delete projects / update projects
 export const projects = {
@@ -44,7 +45,7 @@ export const projects = {
           status: args.status,
           Project_Picture: args.Project_Picture,
           Users: {
-            connect: args.Users.map(({ id }) => {
+            connect: args.Users.map(({ id }: any) => {
               return { id: Number(id) };
             }),
           },
@@ -80,7 +81,7 @@ export const projects = {
         where: { id: Number(args.id) },
         data: {
           Users: {
-            disconnect: args.Users?.map(({ id }) => {
+            disconnect: args.Users?.map(({ id }: IUsers) => {
               return { id: Number(id) };
             }),
           },
@@ -94,7 +95,7 @@ export const projects = {
         where: { id: Number(args.id) },
         data: {
           Users: {
-            connect: args.Users?.map(({ id }) => {
+            connect: args.Users?.map(({ id }: IUsers) => {
               return { id: Number(id) };
             }),
           },
