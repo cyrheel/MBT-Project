@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { ApolloError, useMutation } from "@apollo/client";
+import { CREATE_TICKET } from "../Hooks/useCreateTicket";
 import {
   formContainerStyle,
   inputContainerStyle,
@@ -6,6 +8,7 @@ import {
   inputStyle,
   labelStyle,
   radioInputStyle,
+  buttonStyle,
 } from "../Styles/style";
 
 // custom the default styles of the card style
@@ -14,75 +17,119 @@ const cardStyle = {
     "flex flex-col w-1/4 h-3/4 bg-slate-200 items-center justify-evenly mt-2 border-4 border-solid border-blue-600 rounded-xl shadow-xl",
 };
 
-function TicketCreationForm() {
-  // Helpers
-  // let today = new Date(Date.now()).toISOString();
-  // today = today.slice(0, 10);
-
+function TicketCreationForm(): JSX.Element {
   // State
   const [tskName, setName] = useState<string>("");
   const [tskStatus, setStatus] = useState<string>("");
   const [tskLabels, setLabels] = useState<string>("");
-  const [tskProject, setProject] = useState<string>(""); // Gonna be Int when db ready
+  const [tskProject, setProject] = useState<string>("");
   const [tskMembers, setMembers] = useState<string>("");
-  const [tskDifficulty, setDifficulty] = useState<number>(1);
-  const [tskUrgence, setUrgence] = useState<number>(1);
+  const [tskDifficulty, setDifficulty] = useState<string>("");
+  const [tskUrgence, setUrgence] = useState<string>("");
   const [tskDesc, setDesc] = useState<string>("");
+  // eslint-disable-next-line
+  const [addTicket, { data, loading, error }] = useMutation(CREATE_TICKET);
 
   // Funcs
-  const HandleNameChanges = (e: any): void => {
+  const HandleNameChanges = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setName(e.target.value);
   };
 
-  const HandleStatusChanges = (e: any): void => {
+  const HandleStatusChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setStatus(e.target.value);
   };
 
-  const HandleLabelsChanges = (e: any): void => {
+  const HandleLabelsChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setLabels(e.target.value);
   };
 
-  const HandleProjectChanges = (e: any): void => {
+  const HandleProjectChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setProject(e.target.value);
   };
 
-  const HandleMembersChanges = (e: any): void => {
+  const HandleMembersChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setMembers(e.target.value);
   };
 
-  const HandleDifficultyChanges = (e: any): void => {
+  const HandleDifficultyChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setDifficulty(e.target.value);
   };
 
-  const HandleUrgenceChanges = (e: any): void => {
+  const HandleUrgenceChanges = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): void => {
     setUrgence(e.target.value);
   };
 
-  const HandleDescChanges = (e: any): void => {
+  const HandleDescChanges = (e: React.ChangeEvent<HTMLInputElement>): void => {
     setDesc(e.target.value);
   };
 
-  const btnCreateClicked = (): void => {
-    const newTicket = {
-      title: tskName,
-      description: tskDesc,
-      estimated_time: 0,
-      spent_time: 0,
-      status: tskStatus,
-      labels: tskLabels,
-      priority: tskUrgence,
-      difficulty: tskDifficulty,
-      // project: Type projet
-      projectId: tskProject,
-      ticket_comment: [],
-      ticket_user: tskMembers,
-    };
-    //TODO: Handle Ticket Creation Here (send newTicket w/ GQL to Db)
+  const RenderError = (err: ApolloError | any): JSX.Element => {
+    return (
+      <div>
+        <p>Error in Ticket creation :/</p>
+        <p>{err ? err.message : "No error msg"}</p>
+      </div>
+    );
+  };
+
+  const RenderLoading = (): JSX.Element => {
+    return <p>Loading...</p>;
   };
 
   // Render
+  if (error) {
+    return <RenderError err={error} />;
+  }
+  if (loading) {
+    return <RenderLoading />;
+  }
   return (
-    <div {...formContainerStyle}>
+    <form
+      onSubmit={async (e) => {
+        // TODO: type params and func return
+        e.preventDefault();
+        const newTicketID = "2";
+        await addTicket({
+          variables: {
+            createNewTicketId: newTicketID,
+            title: tskName,
+            users: [
+              {
+                id: tskMembers,
+              },
+            ],
+            difficulty: tskDifficulty,
+            priority: tskUrgence,
+            labels: tskLabels,
+            status: tskStatus,
+            description: tskDesc,
+            projectId: parseInt(tskProject),
+          },
+        });
+        setName("");
+        setStatus("");
+        setLabels("");
+        setProject("");
+        setMembers("");
+        setDifficulty("");
+        setUrgence("");
+        setDesc("");
+        // TODO trigger l'affichage d'une popup pour dire que le ticket a bien été créé
+      }}
+      {...formContainerStyle}
+    >
       <div id="left" {...cardStyle}>
         <div {...inputContainerStyle}>
           <label htmlFor="tskName" {...labelStyle}>
@@ -131,9 +178,9 @@ function TicketCreationForm() {
             onChange={(e: any) => HandleProjectChanges(e)}
             {...inputStyle}
           >
-            <option value="proj1">Projet A</option>
-            <option value="proj2">Projet B</option>
-            <option value="showmore">show more...</option>
+            <option value="1">Projet A</option>
+            <option value="2">Projet B</option>
+            <option value="3">show more...</option>
           </select>
         </div>
         <div {...inputContainerStyle}>
@@ -145,9 +192,9 @@ function TicketCreationForm() {
             onChange={(e: any) => HandleMembersChanges(e)}
             {...inputStyle}
           >
-            <option value="wip">A voir pour mettre de vrais user ?</option>
-            <option value="wip2">ça serait cool d'avoir leur pp aussi</option>
-            <option value="wip3">trkl c'est du detail</option>
+            <option value="1">User 1</option>
+            <option value="2">User 2</option>
+            <option value="3">User 3</option>
           </select>
         </div>
         <div id="difficultyRadio" {...inputContainerStyle}>
@@ -161,7 +208,7 @@ function TicketCreationForm() {
                 id="dif1"
                 type="radio"
                 name="difficulty"
-                value={1}
+                value={"1"}
                 onChange={(e: any) => HandleDifficultyChanges(e)}
                 {...radioInputStyle}
               ></input>
@@ -174,7 +221,7 @@ function TicketCreationForm() {
                 id="dif2"
                 type="radio"
                 name="difficulty"
-                value={2}
+                value={"2"}
                 onChange={(e: any) => HandleDifficultyChanges(e)}
                 {...radioInputStyle}
               ></input>
@@ -187,7 +234,7 @@ function TicketCreationForm() {
                 id="dif3"
                 type="radio"
                 name="difficulty"
-                value={3}
+                value={"3"}
                 onChange={(e: any) => HandleDifficultyChanges(e)}
                 {...radioInputStyle}
               ></input>
@@ -200,7 +247,7 @@ function TicketCreationForm() {
                 id="dif4"
                 type="radio"
                 name="difficulty"
-                value={4}
+                value={"4"}
                 onChange={(e: any) => HandleDifficultyChanges(e)}
                 {...radioInputStyle}
               ></input>
@@ -213,7 +260,7 @@ function TicketCreationForm() {
                 id="dif5"
                 type="radio"
                 name="difficulty"
-                value={5}
+                value={"5"}
                 onChange={(e: any) => HandleDifficultyChanges(e)}
                 {...radioInputStyle}
               ></input>
@@ -231,7 +278,7 @@ function TicketCreationForm() {
                 id="urg1"
                 type="radio"
                 name="urgence"
-                value={1}
+                value={"1"}
                 onChange={(e: any) => HandleUrgenceChanges(e)}
                 {...radioInputStyle}
               ></input>
@@ -244,7 +291,7 @@ function TicketCreationForm() {
                 id="urg2"
                 type="radio"
                 name="urgence"
-                value={2}
+                value={"2"}
                 onChange={(e: any) => HandleUrgenceChanges(e)}
                 {...radioInputStyle}
               ></input>
@@ -257,7 +304,7 @@ function TicketCreationForm() {
                 id="urg3"
                 type="radio"
                 name="urgence"
-                value={3}
+                value={"3"}
                 onChange={(e: any) => HandleUrgenceChanges(e)}
                 {...radioInputStyle}
               ></input>
@@ -270,7 +317,7 @@ function TicketCreationForm() {
                 id="urg4"
                 type="radio"
                 name="urgence"
-                value={4}
+                value={"4"}
                 onChange={(e: any) => HandleUrgenceChanges(e)}
                 {...radioInputStyle}
               ></input>
@@ -283,7 +330,7 @@ function TicketCreationForm() {
                 id="urg5"
                 type="radio"
                 name="urgence"
-                value={5}
+                value={"5"}
                 onChange={(e: any) => HandleUrgenceChanges(e)}
                 {...radioInputStyle}
               ></input>
@@ -306,9 +353,11 @@ function TicketCreationForm() {
             {...inputStyle}
           ></textarea>
         </div>
-        <button onClick={() => btnCreateClicked()}>Create !</button>
+        <button type="submit" {...buttonStyle}>
+          Create !
+        </button>
       </div>
-    </div>
+    </form>
   );
 }
 
