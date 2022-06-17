@@ -1,18 +1,20 @@
-FROM node:lts-alpine
+FROM node:16.15.1
 
 ENV REQUEST_ORIGIN=http://localhost:5000/
-ENV DATABASE_URL=mysql://root:root@localhost:3309/mont_blanc_ticket
-RUN mkdir app
-WORKDIR /app
+ENV DATABASE_URL=mysql://root:root@host.docker.internal:3309/mont_blanc_ticket
+RUN mkdir server
+WORKDIR /server 
 COPY package*.json ./
 RUN yarn
 RUN yarn global add typescript
 COPY tsconfig.json ./
-COPY gql gql
-COPY prisma prisma
+COPY gql ./gql/
+COPY prisma ./prisma/
 COPY index.ts ./
 COPY db.ts ./
+RUN npx prisma generate
 RUN npx prisma migrate dev
+EXPOSE 4000
 
 
 # RUN tsc
@@ -31,4 +33,4 @@ RUN npx prisma migrate dev
 
 # RUN npm i --production
 
-CMD yarn start
+CMD ["yarn", "start"]

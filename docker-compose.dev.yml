@@ -1,0 +1,32 @@
+services:
+  mysql:
+    container_name: mysql-docker
+    restart: always
+    image: 'mysql:latest'
+    ports:
+      - '3309:3306'
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+    # volumes:
+      # - db-volume:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+  server:
+    build: ./server
+    ports:
+      - 4000:4000
+    depends_on:
+      - mysql
+    environment:
+      - REQUEST_ORIGIN=http://localhost:5000/
+      - DATABASE_URL=mysql://root:root@host.docker.internal:3309/mont_blanc_ticket
+    command: 'bash -c "yarn && yarn global add typescript && yarn start && npx prisma migrate dev"'
+    volumes: 
+      - ./server/src/:/server/src/
+  client:
+    build: ./client
+    ports:
+      - 3000:3000
+    depends_on:
+      - server
+    volumes:
+      - ./client/src/:/client/src/
