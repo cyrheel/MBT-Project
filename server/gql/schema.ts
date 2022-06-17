@@ -1,9 +1,8 @@
 const { gql } = require('apollo-server');
-import { GraphQLScalarType } from 'graphql';
 const db = require('../db');
 
 export const typeDefs = gql`
-  scalar Date
+  scalar LocalDate
   #//* ----------------  START DEFINING TYPES  ---------------- *//
   type User {
     id: ID!
@@ -24,9 +23,9 @@ export const typeDefs = gql`
     id: ID!
     title: String!
     description: String
-    start_time: Date!
-    end_time: Date
-    status: String
+    start_time: LocalDate!
+    end_time: LocalDate
+    status: StatusEnum!
     #//! Foreign Key
     #//* One To One
     Project_Picture: Picture
@@ -42,7 +41,7 @@ export const typeDefs = gql`
     description: String
     estimated_time: Int
     spent_time: Int
-    status: String
+    status: StatusEnum!
     labels: String
     priority: String
     difficulty: String
@@ -66,8 +65,8 @@ export const typeDefs = gql`
   type Comment {
     id: ID!
     content: String!
-    published_at: Date!
-    modified_at: Date
+    published_at: LocalDate!
+    modified_at: LocalDate
     #//! Foreign Key
     #//* Many To Many
     Users: [User]
@@ -114,6 +113,14 @@ export const typeDefs = gql`
   }
   #//* ----------------  END DEFINING INPUTS  ---------------- *//
 
+  #//* ----------------  START DEFINING ENUM  ---------------- *//
+  enum StatusEnum {
+    OPEN
+    IN_PROGRESS
+    CLOSE
+  }
+  #//* ----------------  END DEFINING ENUM  ---------------- *//
+
   #//* ----------------  START DEFINING MUTATIONS  ---------------- *//
   type Mutation {
     #//* ALL FUNCTION FOR USER
@@ -146,9 +153,9 @@ export const typeDefs = gql`
       id: ID!
       title: String!
       description: String
-      start_time: Date!
-      end_time: Date
-      status: String
+      start_time: LocalDate!
+      end_time: LocalDate
+      status: StatusEnum
       #//! Foreign Key
       #//* One To One
       Project_Picture: PictureInput
@@ -161,9 +168,9 @@ export const typeDefs = gql`
       id: ID!
       title: String
       description: String
-      start_time: Date
-      end_time: Date
-      status: String
+      start_time: LocalDate
+      end_time: LocalDate
+      status: StatusEnum
     ): Project
 
     #//? DELETE A PROJECT
@@ -183,7 +190,7 @@ export const typeDefs = gql`
       description: String
       estimated_time: Int
       spent_time: Int
-      status: String
+      status: StatusEnum
       labels: String
       priority: String
       difficulty: String
@@ -203,7 +210,7 @@ export const typeDefs = gql`
       description: String
       estimated_time: Int
       spent_time: Int
-      status: String
+      status: StatusEnum
       labels: String
       priority: String
       difficulty: String
@@ -220,16 +227,6 @@ export const typeDefs = gql`
   }
   #//* ----------------  END DEFINING MUTATIONS  ---------------- *//
 `;
-
-const dateScalar = new GraphQLScalarType({
-  name: 'Date',
-  parseValue(value: any) {
-    return new Date(value);
-  },
-  serialize(value: any) {
-    return value.toISOString();
-  },
-});
 
 /*
 {
