@@ -29,12 +29,6 @@ export const projects = {
   Mutation: {
     //? CREATE A NEW PROJECT
     createNewProject: async (_: any, args: any) => {
-      // Add getCurrentUser() && Get User's Infos
-      const user = await db.User.findUnique({
-        where: {
-          id: Number(args.Users.id),
-        },
-      });
       return await db.Project.create({
         data: {
           id: Number(args.id),
