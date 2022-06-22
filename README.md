@@ -100,5 +100,7 @@ Actuellement le dossier server est composé du strict minimum, un server express
 ## Build Dev env
 
 - docker compose -f docker-compose.dev.yml up --force-recreate --build -d 
+- docker run --name mysql-docker -d -p 3309:3306 --env MYSQL_ROOT_PASSWORD=root --volume db-volume:/var/lib/mysql mysql:8.0.22 mysqld --default-authentication-plugin=mysql_native_password
+- docker exec -it mysql-docker mysql -u root --password=root
 
 Happy Hacking :)

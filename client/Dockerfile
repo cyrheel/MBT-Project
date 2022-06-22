@@ -1,4 +1,4 @@
-FROM node:lts-alpine
+FROM node:16.15.1
 
 RUN mkdir /client
 WORKDIR /client
