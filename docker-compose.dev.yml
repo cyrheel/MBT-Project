@@ -18,6 +18,7 @@ services:
         retries: 20
   server:
     build: ./server
+    restart: always
     ports:
       - 4000:4000
     depends_on:
@@ -26,15 +27,16 @@ services:
     environment:
       - REQUEST_ORIGIN=http://localhost:5000/
       - DATABASE_URL=mysql://root:root@host.docker.internal:3309/mont_blanc_ticket
-    command: 'bash -c "yarn && yarn global add typescript && yarn start && npx prisma generate && npx prisma migrate dev"'
+    command: 'npx prisma migrate dev && yarn start'
     volumes: 
       - ./server/src/:/server/src/
     healthcheck:
-        test: ["CMD", "curl", "localhost:4000"]
+        test: ["CMD", "curl", "127.0.0.1:4000/graphql"]
         interval: 5s
         retries: 20
   client:
     build: ./client
+    restart: always
     ports:
       - 3000:3000
     depends_on:
@@ -42,3 +44,4 @@ services:
         condition: service_healthy
     volumes:
       - ./client/src/:/client/src/
+    command: 'yarn start'

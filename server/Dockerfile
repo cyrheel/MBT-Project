@@ -13,7 +13,7 @@ COPY prisma ./prisma/
 COPY index.ts ./
 COPY db.ts ./
 RUN npx prisma generate
-RUN npx prisma migrate dev
+# RUN npx prisma migrate dev
 EXPOSE 4000
 
 
