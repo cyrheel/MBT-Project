@@ -3,45 +3,62 @@ services:
     container_name: mysql-docker
     restart: always
     image: 'mysql:8.0.22'
-    ports:
-      - '3309:3306'
     environment:
       - MYSQL_USER=root
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=mont_blanc_ticket
     volumes:
       - ./db-volume:/var/lib/mysql
-    command: --default-authentication-plugin=mysql_native_password
+    command: '--default-authentication-plugin=mysql_native_password'
     healthcheck:
         test: "mysql -u root -proot --execute 'SHOW DATABASES;'"
-        interval: 5s
-        retries: 20
+        interval: 1s
+        retries: 120
+    networks:
+      data:
+        aliases:
+          - mysql
   server:
+    container_name: server-docker
     build: ./server
     restart: always
-    ports:
-      - 4000:4000
     depends_on:
       mysql:
         condition: service_healthy
     environment:
-      - REQUEST_ORIGIN=http://localhost:5000/
-      - DATABASE_URL=mysql://root:root@host.docker.internal:3309/mont_blanc_ticket
-    command: 'npx prisma migrate dev && yarn start'
-    volumes: 
+      - REQUEST_ORIGIN=client:5000/
+      - DATABASE_URL=mysql://root:root@mysql:3306/mont_blanc_ticket
+    volumes:
       - ./server/src/:/server/src/
     healthcheck:
-        test: ["CMD", "curl", "127.0.0.1:4000/graphql"]
-        interval: 5s
-        retries: 20
+        test: ["CMD", "curl", "server:4000/graphql"]
+        interval: 1.5s
+        retries: 120
+    networks:
+      data:
+        priority: 1000
+        aliases:
+          - server
+      web:
+        aliases:
+          - server
   client:
+    container_name: client-docker
     build: ./client
     restart: always
-    ports:
-      - 3000:3000
     depends_on:
       server:
         condition: service_healthy
     volumes:
       - ./client/src/:/client/src/
     command: 'yarn start'
+    networks:
+      web :
+        aliases:
+          - client
+
+networks:
+  data:
+    driver: bridge
+  web:
+    driver: bridge

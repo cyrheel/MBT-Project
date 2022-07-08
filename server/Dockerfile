@@ -1,21 +1,22 @@
 FROM node:16.15.1
 
-ENV REQUEST_ORIGIN=http://localhost:5000/
-ENV DATABASE_URL=mysql://root:root@host.docker.internal:3309/mont_blanc_ticket
+ENV REQUEST_ORIGIN=client://localhost:5000/
+ENV DATABASE_URL=mysql://root:root@mysql:3306/mont_blanc_ticket
+
 RUN mkdir server
 WORKDIR /server 
 COPY package*.json ./
 RUN yarn
 RUN yarn global add typescript
-COPY tsconfig.json ./
 COPY gql ./gql/
 COPY prisma ./prisma/
+COPY tsconfig.json ./
 COPY index.ts ./
 COPY db.ts ./
-RUN npx prisma generate
-# RUN npx prisma migrate dev
+COPY entrypoint.sh ./
+RUN chmod +x entrypoint.sh
 EXPOSE 4000
-
+CMD ["./entrypoint.sh"]
 
 # RUN tsc
 
@@ -32,5 +33,3 @@ EXPOSE 4000
 # COPY package*.json ./
 
 # RUN npm i --production
-
-CMD ["yarn", "start"]
