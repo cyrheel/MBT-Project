@@ -77,6 +77,9 @@ export const typeDefs = gql`
 
   #//* ----------------  START DEFINING QUERIES  ---------------- *//
   type Query {
+    #//? AUTH QUERIES
+    login(email: String!): String
+
     #//? USER QUERIES
     getAllUsers: [User]
     getUserById(id: ID): User
