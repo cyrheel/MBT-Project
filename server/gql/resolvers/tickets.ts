@@ -34,7 +34,6 @@ export const tickets = {
     createNewTicket: async (_: any, args: any) => {
       return await db.Ticket.create({
         data: {
-          id: Number(args.id),
           title: args.title,
           description: args.description,
           estimated_time: args.estimated_time,

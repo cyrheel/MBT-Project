@@ -122,7 +122,6 @@ export const typeDefs = gql`
     #//* ALL FUNCTION FOR USER
     #//? CREATE A NEW USER
     createNewUser(
-      id: ID!
       name: String!
       email: String!
       hashedPassword: String!
@@ -146,7 +145,6 @@ export const typeDefs = gql`
     #//* ALL FUNCTION FOR PROJECT
     #//? CREATE A NEW PROJECT
     createNewProject(
-      id: ID!
       title: String!
       description: String
       start_time: Date!
@@ -181,7 +179,6 @@ export const typeDefs = gql`
     #//* ALL FUNCTIONS FOR TICKET
     #//? CREATE A NEW TICKET
     createNewTicket(
-      id: ID!
       title: String!
       description: String
       estimated_time: Int

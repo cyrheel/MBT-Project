@@ -60,7 +60,6 @@ export const users = {
       const hashedPassword = await hashPassword(args.hashedPassword);
       return await db.User.create({
         data: {
-          id: Number(args.id),
           name: args.name,
           email: args.email,
           hashedPassword,
