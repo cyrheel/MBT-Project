@@ -83,3 +83,5 @@ module
 //! npx prisma migrate dev
 //! npx prisma db seed
 //! npx prisma migrate reset
+
+export {};

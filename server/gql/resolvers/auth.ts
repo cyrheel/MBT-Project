@@ -1,3 +1,4 @@
+import { verifyPassword } from './users';
 const { ApolloError } = require('apollo-server');
 const db = require('../../db');
 const jwt = require('jsonwebtoken');
@@ -11,9 +12,10 @@ export const auth = {
           email: args.email,
         },
       });
+      console.log(args.hashedPassword, user.hashedPassword);
       if (
         user &&
-        (await db.user.verifyPassword(args.hashedPassword, user.hashedPassword))
+        (await verifyPassword(args.hashedPassword, user.hashedPassword))
       ) {
         const token = jwt.sign({ user: user.email }, process.env.JWT_KEY);
         return token;

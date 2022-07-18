@@ -33,7 +33,7 @@ export const typeDefs = gql`
     #//* One To Many
     Tickets: [Ticket]
     #//* Many To Many
-    Users: [User]
+    Users: [User]!
   }
 
   type Ticket {
@@ -48,7 +48,7 @@ export const typeDefs = gql`
     difficulty: String
     #//! Foreign Key
     #//* Many To One
-    projectId: ID
+    projectId: ID!
     #//* Many To Many
     Comments: [Comment]
     Users: [User]
@@ -70,15 +70,15 @@ export const typeDefs = gql`
     modified_at: Date
     #//! Foreign Key
     #//* Many To Many
-    Users: [User]
-    Tickets: [Ticket]
+    Users: [User]!
+    Tickets: [Ticket]!
   }
   #//* ----------------  END DEFINING TYPES  ---------------- *//
 
   #//* ----------------  START DEFINING QUERIES  ---------------- *//
   type Query {
     #//? AUTH QUERIES
-    login(email: String!): String
+    login(email: String!, hashedPassword: String!): String
 
     #//? USER QUERIES
     getAllUsers: [User]
@@ -156,7 +156,7 @@ export const typeDefs = gql`
       #//* One To One
       Project_Picture: PictureInput
       #//* Many To Many
-      Users: [UserInput]
+      Users: [UserInput]!
     ): Project
 
     #// ? UPDATE A PROJECT
@@ -193,7 +193,7 @@ export const typeDefs = gql`
       #//! Foreign Key
       #//* Many To One
       #Project: ProjectInput
-      projectId: Int
+      projectId: Int!
       #//* Many To Many
       #Comments: CommentInput
       Users: [UserInput]

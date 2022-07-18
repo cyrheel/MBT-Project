@@ -13,7 +13,7 @@ const { ApolloServer } = require('apollo-server');
 const server = new ApolloServer({
   typeDefs,
   resolvers: [projects, tickets, users, auth],
-  //! création du context pour generer le token
+  //! Création du context pour générer le token
   context: ({ req }: any) => {
     const token = req.headers.authorization;
     if (token) {
@@ -22,7 +22,7 @@ const server = new ApolloServer({
         payload = jwt.verify(token, process.env.JWT_KEY);
         return { authenticatedUserEmail: payload.user };
       } catch (err) {
-        return { authenticatedUserEmail: null };
+        return {};
       }
     }
   },

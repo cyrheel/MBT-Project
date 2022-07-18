@@ -1,7 +1,7 @@
 const db = require('../../db');
 // import db from '../../db';
 const argon2 = require('argon2');
-
+import { ApolloError } from 'apollo-server';
 //DONE : USER IS DONE! ✅ (LOGIN IS MISSING)
 
 //* ---------------- OPTIONS HASHING PASSWORD ---------------- *//
@@ -18,7 +18,10 @@ const hashPassword = (plainPassword: string) => {
 };
 
 //* ---------------- CHECK PASSWORD ---------------- *//
-const verifyPassword = (plainPassword: string, hashedPassword: string) => {
+export const verifyPassword = (
+  plainPassword: string,
+  hashedPassword: string
+) => {
   return argon2.verify(hashedPassword, plainPassword, hashingOptions);
 };
 
@@ -26,13 +29,17 @@ export const users = {
   //* ----------------  USER QUERIES  ---------------- *//
   Query: {
     //? GET ALL USERS
-    getAllUsers: async () => {
-      return await db.User.findMany({
-        include: {
-          Projects: true,
-          Tickets: true,
-        },
-      });
+    getAllUsers: async (parents: any, args: any, context: any, info: any) => {
+      if (context.authenticatedUserEmail) {
+        return await db.User.findMany({
+          include: {
+            Projects: true,
+            Tickets: true,
+          },
+        });
+      } else {
+        throw new ApolloError('Invalid auth');
+      }
     },
 
     //? GET A USER
