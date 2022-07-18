@@ -44,7 +44,7 @@ export const tickets = {
           difficulty: args.difficulty,
           projectId: Number(args.projectId),
           Users: {
-            connect: args.Users.map(({ id }: any) => {
+            connect: args.Users?.map(({ id }: any) => {
               return { id: Number(id) };
             }),
           },

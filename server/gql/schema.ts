@@ -33,7 +33,7 @@ export const typeDefs = gql`
     #//* One To Many
     Tickets: [Ticket]
     #//* Many To Many
-    Users: [User]!
+    Users: [User]
   }
 
   type Ticket {
