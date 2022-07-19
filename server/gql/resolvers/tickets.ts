@@ -34,7 +34,6 @@ export const tickets = {
     createNewTicket: async (_: any, args: any) => {
       return await db.Ticket.create({
         data: {
-          id: Number(args.id),
           title: args.title,
           description: args.description,
           estimated_time: args.estimated_time,
@@ -45,7 +44,7 @@ export const tickets = {
           difficulty: args.difficulty,
           projectId: Number(args.projectId),
           Users: {
-            connect: args.Users.map(({ id }: any) => {
+            connect: args.Users?.map(({ id }: any) => {
               return { id: Number(id) };
             }),
           },

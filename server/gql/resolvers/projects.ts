@@ -31,7 +31,6 @@ export const projects = {
     createNewProject: async (_: any, args: any) => {
       return await db.Project.create({
         data: {
-          id: Number(args.id),
           title: args.title,
           description: args.description,
           start_time: args.start_time,
