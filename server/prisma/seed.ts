@@ -1,5 +1,5 @@
-import { v4 as uuidv4 } from 'uuid';
 const db = require('../db');
+// import { v4 as uuidv4 } from 'uuid';
 
 module.exports = async function seed() {
   await db.User.createMany({
@@ -72,7 +72,7 @@ module.exports = async function seed() {
 
 module
   .exports()
-  .catch((e) => {
+  .catch((e: React.SyntheticEvent<EventTarget>) => {
     console.error(e);
     process.exit(1);
   })
@@ -83,3 +83,5 @@ module
 //! npx prisma migrate dev
 //! npx prisma db seed
 //! npx prisma migrate reset
+
+export {};

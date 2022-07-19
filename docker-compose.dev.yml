@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  mysql:
+    container_name: mysql-docker
+    restart: always
+    image: 'mysql:8.0.22'
+    ports:
+      - '3309:3306'
+    environment:
+      - MYSQL_USER=root
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=mont_blanc_ticket
+    volumes:
+      - db-volume:/var/lib/mysql
+    command: '--default-authentication-plugin=mysql_native_password'
+    healthcheck:
+        test: "mysql -u root -proot --execute 'SHOW DATABASES;'"
+        interval: 1s
+        retries: 120
+  server:
+    container_name: server-docker
+    build: ./server
+    restart: always
+    ports:
+      - 4000:4000
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      - REQUEST_ORIGIN=http://localhost:5000/
+      - DATABASE_URL=mysql://root:root@host.docker.internal:3309/mont_blanc_ticket
+      - CHOKIDAR_USEPOLLING="true"
+    volumes:
+      - server:/server/
+    healthcheck:
+        test: "curl http://localhost:4000/graphql"
+        interval: 1s
+        retries: 120
+  client:
+    container_name: client-docker
+    build: ./client
+    restart: always
+    ports:
+      - 3000:3000
+    depends_on:
+      server:
+        condition: service_healthy
+    environment:
+      - CHOKIDAR_USEPOLLING="true"
+    volumes:
+      - app:/client/src/
+    command: 'yarn start'
+
+volumes:
+  db-volume:
+  server:
+  app: 

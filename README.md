@@ -7,6 +7,7 @@ Ici le projet de fin d'année de 6 wilders fan de ticketing 🙃
 2. [Technos](#Technos)
 3. [Git WorkFlow](#Git-Workflow)
 4. [Gestion de projet en mono-repo](#Gestion-de-projet-en-mono-repo)
+5. [Build DEV env](#Build-dev-env)
 
 ## Context
 
@@ -95,5 +96,11 @@ Si vous souhaitez mieux comprendre comment le mono-repo fonctionne je vous invit
 Note à l'attention des future travailleur du backend:
 
 Actuellement le dossier server est composé du strict minimum, un server express y à été initialiser afin de tester le bon fonctionnement du mono-repo. Les librairies installer sont donc express et nodemon, rien de plus. Je vous invite donc à désinstaller express avec les commandes décrite plus haut, puis à supprimer le fichier index.js car comme son nom l'indique, il est en JS. Vous n'aurez ensuite que le strict minimum, un dossier node-modules, un fichier package.json (que je vous invite également à aller modifier, notamenent le script "start") et c'est tout !
+
+## Build Dev env
+
+- docker compose -f docker-compose.dev.yml up -d 
+- docker run --name mysql-docker -d -p 3306:3306 --env MYSQL_ROOT_PASSWORD=root --volume db-volume:/var/lib/mysql mysql:8.0.22 mysqld --default-authentication-plugin=mysql_native_password
+- docker exec -it mysql-docker mysql -u root --password=root
 
 Happy Hacking :)
