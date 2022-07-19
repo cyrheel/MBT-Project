@@ -1,4 +1,4 @@
-const { gql } = require('apollo-server');
+const { gql } = require('apollo-server-express');
 import { GraphQLScalarType } from 'graphql';
 const db = require('../db');
 

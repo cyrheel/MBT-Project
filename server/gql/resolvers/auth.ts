@@ -1,5 +1,5 @@
 import { verifyPassword } from './users';
-const { ApolloError } = require('apollo-server');
+const { ApolloError } = require('apollo-server-express');
 const db = require('../../db');
 const jwt = require('jsonwebtoken');
 
@@ -12,13 +12,17 @@ export const auth = {
           email: args.email,
         },
       });
-      console.log(args.hashedPassword, user.hashedPassword);
       if (
         user &&
         (await verifyPassword(args.hashedPassword, user.hashedPassword))
       ) {
         const token = jwt.sign({ user: user.email }, process.env.JWT_KEY);
-        return token;
+        context.res.cookie('token', token, {
+          maxAge: 1000 * 60 * 60 * 24 * 7,
+          httpOnly: true,
+          secure: true,
+        });
+        return 'You are now logged in.';
       } else {
         throw new ApolloError('Invalid credentials');
       }

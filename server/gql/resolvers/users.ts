@@ -1,7 +1,7 @@
 const db = require('../../db');
 // import db from '../../db';
 const argon2 = require('argon2');
-import { ApolloError } from 'apollo-server';
+import { ApolloError } from 'apollo-server-express';
 //DONE : USER IS DONE! ✅ (LOGIN IS MISSING)
 
 //* ---------------- OPTIONS HASHING PASSWORD ---------------- *//
