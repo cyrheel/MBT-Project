@@ -9,6 +9,4 @@ COPY public ./public/
 COPY postcss.config.js ./
 COPY tailwind.config.js ./
 COPY tsconfig.json ./
-# RUN yarn run tsc
-EXPOSE 3000
 CMD ["yarn", "start"]

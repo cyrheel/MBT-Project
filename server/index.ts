@@ -5,7 +5,6 @@ import { users } from './gql/resolvers/users';
 import { auth } from './gql/resolvers/auth';
 import * as dotenv from 'dotenv';
 const jwt = require('jsonwebtoken');
-
 dotenv.config();
 
 const { ApolloServer } = require('apollo-server');
