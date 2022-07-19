@@ -72,7 +72,7 @@ module.exports = async function seed() {
 
 module
   .exports()
-  .catch((e) => {
+  .catch((e: any) => {
     console.error(e);
     process.exit(1);
   })

@@ -1,3 +1,5 @@
-npx prisma generate
-npx prisma migrate dev
+npx prisma generate &
+wait
+npx prisma migrate dev &
+wait
 yarn start
