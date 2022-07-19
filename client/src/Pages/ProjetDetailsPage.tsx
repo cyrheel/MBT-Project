@@ -1,11 +1,12 @@
 import React from "react";
 import Navbar from "../Components/Navbar";
+import ProjectDetail from "../Components/ProjectDetail";
 
 function ProjetDetailsPage(): JSX.Element {
   return (
     <div>
       <Navbar />
-      <p>Ici la page ou nous verrons les details des Projet :)</p>
+      <ProjectDetail/>
     </div>
   );
 }

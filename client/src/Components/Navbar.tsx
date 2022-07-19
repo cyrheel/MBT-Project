@@ -8,7 +8,7 @@ function Navbar(): JSX.Element {
   let navigate = useNavigate();
 
   return (
-    <nav className="flex items-center justify-around leading-tight h-20">
+    <nav className="flex items-center justify-around leading-tight h-20 bg-sky-400">
       <img
         className="logo"
         src={logo}
@@ -16,19 +16,19 @@ function Navbar(): JSX.Element {
         onClick={() => navigate("/", { replace: true })}
       />
       <button
-        className="font-semibold text-xl"
+        className="font-semibold text-xl text-white font-bold"
         onClick={() => navigate("/projetList", { replace: true })}
       >
         Projects
       </button>
       <button
-        className="font-semibold text-xl"
+        className="font-semibold text-xl text-white font-bold"
         onClick={() => navigate("/login", { replace: true })}
       >
         Login
       </button>
       <button
-        className="font-semibold text-xl"
+        className="font-semibold text-xl text-white font-bold"
         onClick={() => navigate("/register", { replace: true })}
       >
         Register
