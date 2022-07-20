@@ -1,3 +1,4 @@
+import "@testing-library/jest-dom";
 import { BrowserRouter } from "react-router-dom";
 import { render } from "@testing-library/react";
 import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
@@ -50,20 +51,5 @@ describe("# Page Rendering", () => {
   });
   it("should render Ticket Detail Page without crashing", () => {
     overRender(<TicketDetailPage />);
-  });
-});
-
-describe("# Page Content Tests", () => {
-  describe("-Connexion Page", () => {
-    it("should have a signIN component", () => {});
-  });
-  describe("-Inscription Page", () => {
-    it("should have a signUP component", () => {});
-  });
-  describe("-Home Page", () => {
-    it("should have a navbar", () => {});
-  });
-  describe("-Projet Creation Page", () => {
-    it("should have a navbar", () => {});
   });
 });
