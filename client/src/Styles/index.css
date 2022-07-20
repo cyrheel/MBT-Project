@@ -13,7 +13,33 @@
   max-width: 11rem;
   filter: invert(8%) sepia(100%) saturate(7445%) hue-rotate(248deg) brightness(93%) contrast(144%);
 }
+#card #additional {
+  transition: width 0.4s;
+  overflow: hidden;
+  z-index: 2;
+}
+/* #card:hover #more-info {
+width: 75%;
+transition: width 0.6s;
+padding: 1rem;
+} */
+#card #more-info {
+background-color: rgb(82, 168, 238);
+width: 75%;
+z-index: 3;
+}
 
+#card #additional #user-card::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 10%;
+  right: -2px;
+  height: 80%;
+}
+#card #additional .coords span + span{
+  float: right;
+}
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
