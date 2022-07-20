@@ -16,10 +16,7 @@ dotenv.config();
 const app = express();
 //? initalize options for cors
 const corsOptions = {
-  origin:
-    'https://studio.apollographql.com' ||
-    'http://localhost:3000' ||
-    'http://localhost:4000',
+  origin: '*',
   credentials: true,
 };
 
