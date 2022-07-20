@@ -27,7 +27,7 @@ function TicketDetailPage(): JSX.Element {
 
           <div className="flex justify-around mb-6">
             {taskMembers.map((members, index) => (
-              <div className="flex rounded-lg bg-white">
+              <div key={index} className="flex rounded-lg bg-white">
                 <img
                   className="default-pp h-6 mr-2"
                   src={defaultPP}
@@ -61,7 +61,7 @@ function TicketDetailPage(): JSX.Element {
               ViewAll
             </button>
             {taskComments.map((comment, index) => (
-              <p>{comment}</p>
+              <p key={index}>{comment}</p>
             ))}
             <div>
               <form action="" className="w-full p-4">
