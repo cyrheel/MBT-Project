@@ -9,7 +9,6 @@ import {
 } from "../Styles/style"; 
 
 function ProjectItem(project: IProjet): JSX.Element {
-    //state
     const [moreInfoStatus, setMoreInfoStatus] = useState<boolean>(false);
     const [clickedButton, setClickedButton] = useState('');
     //funcs
