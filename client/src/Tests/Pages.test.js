@@ -11,94 +11,59 @@ import TicketCreationPage from "../Pages/TicketCreationPage";
 import TicketListPage from "../Pages/TicketListPage";
 import TicketDetailPage from "../Pages/TicketDetailPage";
 
-let client;
+const overRender = (component) => {
+  const client = new ApolloClient({
+    uri: "http://localhost:4000/graphql",
+    cache: new InMemoryCache(),
+  });
+  render(
+    <ApolloProvider client={client}>
+      <BrowserRouter>{component}</BrowserRouter>
+    </ApolloProvider>
+  );
+};
 
 describe("# Page Rendering", () => {
-  beforeAll(() => {
-    client = new ApolloClient({
-      uri: "http://localhost:4000/graphql",
-      cache: new InMemoryCache(),
-    });
-  });
   it("should render Connexion Page without crashing", () => {
-    render(
-      <BrowserRouter>
-        <ConnexionPage />
-      </BrowserRouter>
-    );
+    overRender(<ConnexionPage />);
   });
   it("should render Inscription Page without crashing", () => {
-    render(
-      <BrowserRouter>
-        <InscriptionPage />
-      </BrowserRouter>
-    );
+    overRender(<InscriptionPage />);
   });
   it("should render Home Page without crashing", () => {
-    render(
-      <BrowserRouter>
-        <HomePage />
-      </BrowserRouter>
-    );
+    overRender(<HomePage />);
   });
   it("should render Project Creation Page without crashing", () => {
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <ProjetCreationPage />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<ProjetCreationPage />);
   });
   it("should render Project List Page without crashing", () => {
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <ProjectListPage />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<ProjectListPage />);
   });
   it("should render Project Detail Page without crashing", () => {
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <ProjetDetailsPage />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<ProjetDetailsPage />);
   });
   it("should render Ticket Creation Page without crashing", () => {
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <TicketCreationPage />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<TicketCreationPage />);
   });
   it("should render Ticket List Page without crashing", () => {
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <TicketListPage />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<TicketListPage />);
   });
   it("should render Ticket Detail Page without crashing", () => {
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <TicketDetailPage />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<TicketDetailPage />);
   });
 });
 
-describe("# Page Logic Tests", () => {
-  it("should do something", () => {
-    expect(true).toBe(true);
+describe("# Page Content Tests", () => {
+  describe("-Connexion Page", () => {
+    it("should have a signIN component", () => {});
+  });
+  describe("-Inscription Page", () => {
+    it("should have a signUP component", () => {});
+  });
+  describe("-Home Page", () => {
+    it("should have a navbar", () => {});
+  });
+  describe("-Projet Creation Page", () => {
+    it("should have a navbar", () => {});
   });
 });

@@ -9,41 +9,27 @@ import ProjectItem from "../Components/ProjectItem";
 import TicketCreationForm from "../Components/TicketCreationForm";
 import UsersDropDown from "../Components/UsersDropDown";
 
-let client;
+const overRender = (component) => {
+  const client = new ApolloClient({
+    uri: "http://localhost:4000/graphql",
+    cache: new InMemoryCache(),
+  });
+  render(
+    <ApolloProvider client={client}>
+      <BrowserRouter>{component}</BrowserRouter>
+    </ApolloProvider>
+  );
+};
 
 describe("# Components Rendering", () => {
-  beforeAll(() => {
-    client = new ApolloClient({
-      uri: "http://localhost:4000/graphql",
-      cache: new InMemoryCache(),
-    });
-  });
   it("should render NavBar without crashing", () => {
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <NavBar />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<NavBar />);
   });
   it("should render SearchBar without crashing", () => {
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <SearchBar />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<SearchBar />);
   });
   it("should render Project Creation Form without crashing", () => {
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <ProjectCreationForm />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<ProjectCreationForm />);
   });
   it("should render Project List component without crashing", () => {
     const mockedData = [
@@ -51,13 +37,7 @@ describe("# Components Rendering", () => {
       { id: 2, name: "Project 2", start_time: "2022-06-15T00:00:00.000Z" },
       { id: 3, name: "Project 3", start_time: "2022-06-15T00:00:00.000Z" },
     ];
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <ProjectList projects={mockedData} />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<ProjectList projects={mockedData} />);
   });
   it("should render Project Item without crashing", () => {
     const mockedData = {
@@ -68,31 +48,13 @@ describe("# Components Rendering", () => {
       end_time: "2022-06-15T00:00:00.000Z",
       description: "Project 2 description",
     };
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <ProjectItem {...mockedData} />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<ProjectItem {...mockedData} />);
   });
   it("should render Ticket Creation Form without crashing", () => {
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <TicketCreationForm />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<TicketCreationForm />);
   });
   it("should render Users dropdown without crashing", () => {
-    render(
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <UsersDropDown />
-        </BrowserRouter>
-      </ApolloProvider>
-    );
+    overRender(<UsersDropDown />);
   });
 });
 
