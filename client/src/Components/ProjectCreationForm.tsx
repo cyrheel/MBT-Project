@@ -1,6 +1,8 @@
 import React, { useState } from "react";
+import moment from "moment";
 import { ApolloError, useMutation } from "@apollo/client";
 import { CREATE_PROJECT } from "../Hooks/useCreateProject";
+import UsersDropDown from "./UsersDropDown";
 import {
   formContainerStyle,
   cardStyle,
@@ -11,13 +13,14 @@ import {
 } from "../Styles/style";
 
 function ProjectCreationForm(): JSX.Element {
+  const dateFormat = "yyyy-MM-DD";
   // State
   const [projectName, setProjectName] = useState<string>("");
   const [projectStatus, setProjectStauts] = useState<string>("");
-  const [projectMembers, setProjectMembers] = useState<
-    number | number[] | undefined //TODO: voir pour typer les ID ?
-  >(undefined);
-  const [startDate, setStartDate] = useState<Date>(new Date(Date.now()));
+  const [projectMembers, setProjectMembers] = useState<string>("");
+  const [startDate, setStartDate] = useState<string>(
+    moment().format().toString()
+  );
   const [endDate, setEndDate] = useState<Date>(new Date(Date.now()));
   const [desc, setDesc] = useState<string>("");
   // eslint-disable-next-line
@@ -36,18 +39,14 @@ function ProjectCreationForm(): JSX.Element {
     setProjectStauts(e.target.value);
   };
 
-  const HandleProjectMembersChanges = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
-    const newID = parseInt(e.target.value);
-    setProjectMembers(newID);
+  const HandleProjectMembersChanges = (e: any): void => {
+    setProjectMembers(e.target.value);
   };
 
   const HandleStartDateChanges = (
     e: React.ChangeEvent<HTMLInputElement>
   ): void => {
-    const newDate = new Date(e.target.value);
-    setStartDate(newDate);
+    setStartDate(e.target.value);
   };
 
   const HandleEndDateChanges = (
@@ -114,21 +113,7 @@ function ProjectCreationForm(): JSX.Element {
             {...inputStyle}
           ></input>
         </div>
-        <div {...inputContainerStyle}>
-          <label htmlFor="projMembers" {...labelStyle}>
-            Project Members
-          </label>
-          <select
-            id="projMembers"
-            // TODO: type params and func return
-            onChange={(e: any) => HandleProjectMembersChanges(e)}
-            {...inputStyle}
-          >
-            <option value={1}>User1</option>
-            <option value={2}>User2</option>
-            <option value={3}>User3</option>
-          </select>
-        </div>
+        <UsersDropDown callback={HandleProjectMembersChanges} />
         <div {...inputContainerStyle}>
           <label htmlFor="startD" {...labelStyle}>
             Start Date
@@ -136,7 +121,7 @@ function ProjectCreationForm(): JSX.Element {
           <input
             id="startD"
             type="date"
-            value={startDate.toString()}
+            value={moment(startDate).format(dateFormat)}
             // TODO: type params and func return
             onChange={(e: any) => HandleStartDateChanges(e)}
             {...inputStyle}
@@ -150,7 +135,7 @@ function ProjectCreationForm(): JSX.Element {
             id="endD"
             type="date"
             // TODO: type params and func return
-            value={endDate.toString()}
+            value={moment(endDate).format(dateFormat)}
             onChange={(e: any) => HandleEndDateChanges(e)}
             {...inputStyle}
           ></input>
