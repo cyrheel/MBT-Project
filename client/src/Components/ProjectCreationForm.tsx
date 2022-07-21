@@ -11,6 +11,7 @@ import {
   buttonStyle,
   inputContainerStyle,
 } from "../Styles/style";
+import StatusDropDown from "./StatusDropDown";
 
 function ProjectCreationForm(): JSX.Element {
   const dateFormat = "yyyy-MM-DD";
@@ -142,21 +143,7 @@ function ProjectCreationForm(): JSX.Element {
         </div>
       </div>
       <div {...cardStyle}>
-        <div {...inputContainerStyle}>
-          <label htmlFor="projStatus" {...labelStyle}>
-            Project Status
-          </label>
-          <select
-            id="projStatus"
-            // TODO: type params and func return
-            onChange={(e: any) => HandleProjectStatusChanges(e)}
-            {...inputStyle}
-          >
-            <option value="open">Open</option>
-            <option value="close">Close</option>
-            <option value="inprogress">In Progress</option>
-          </select>
-        </div>
+        <StatusDropDown callback={HandleProjectStatusChanges} />
         <div {...inputContainerStyle}>
           <label htmlFor="desc" {...labelStyle}>
             Description
