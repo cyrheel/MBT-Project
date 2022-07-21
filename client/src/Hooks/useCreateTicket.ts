@@ -2,18 +2,16 @@ import { gql } from "@apollo/client";
 
 export const CREATE_TICKET = gql`
   mutation Mutation(
-    $createNewTicketId: ID!
     $title: String!
     $description: String
-    $status: String
+    $status: StatusEnum!
     $labels: String
     $priority: String
     $difficulty: String
     $users: [UserInput]
-    $projectId: Int
+    $projectId: Int!
   ) {
     createNewTicket(
-      id: $createNewTicketId
       title: $title
       description: $description
       status: $status

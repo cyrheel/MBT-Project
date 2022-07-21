@@ -1,6 +1,7 @@
 import { gql, useQuery } from "@apollo/client";
 import IProjet from "../Interfaces/IProject";
 
+
 export const GET_PROJECT = gql`
   query GetAllProjects {
     getAllProjects {
