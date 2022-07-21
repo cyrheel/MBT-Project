@@ -1,4 +1,4 @@
-import InscriptionForm from "Components/InscriptionForm";
+
 import React from "react";
 import Navbar from "../Components/Navbar";
 
@@ -7,7 +7,6 @@ function ConnexionPage(): JSX.Element {
     <div>
       <Navbar />
       <p>Connexion Page héhé</p>
-      <InscriptionForm />
     </div>
   );
 }
