@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { ApolloError, useMutation } from "@apollo/client";
+import { ApolloError, useMutation, useQuery } from "@apollo/client";
 import { CREATE_TICKET } from "../Hooks/useCreateTicket";
+import UsersDropDown from "./UsersDropDown";
 import {
   formContainerStyle,
   inputContainerStyle,
@@ -51,9 +52,7 @@ function TicketCreationForm(): JSX.Element {
     setProject(e.target.value);
   };
 
-  const HandleMembersChanges = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ): void => {
+  const HandleMembersChanges = (e: any): void => {
     setMembers(e.target.value);
   };
 
@@ -116,23 +115,22 @@ function TicketCreationForm(): JSX.Element {
         // TODO: type params and func return
         e.preventDefault();
         const newTicketID = "5";
-        await addTicket({
-          variables: {
-            createNewTicketId: newTicketID,
-            title: tskName,
-            users: [
-              {
-                id: tskMembers,
-              },
-            ],
-            difficulty: tskDifficulty,
-            priority: tskUrgence,
-            labels: tskLabels,
-            status: tskStatus,
-            description: tskDesc,
-            projectId: parseInt(tskProject),
-          },
-        });
+        const newTicket = {
+          createNewTicketId: newTicketID,
+          title: tskName,
+          users: [
+            {
+              id: tskMembers !== "" ? tskMembers : "1",
+            },
+          ],
+          difficulty: tskDifficulty,
+          priority: tskUrgence,
+          labels: tskLabels,
+          status: tskStatus,
+          description: tskDesc,
+          projectId: tskProject !== "" ? parseInt(tskProject) : 1,
+        };
+        await addTicket({ variables: newTicket });
         setName("");
         setStatus("");
         setLabels("");
@@ -200,20 +198,7 @@ function TicketCreationForm(): JSX.Element {
             <option value="3">show more...</option>
           </select>
         </div>
-        <div {...inputContainerStyle}>
-          <label htmlFor="tskMembers" {...labelStyle}>
-            Select Members
-          </label>
-          <select
-            id="tskMembers"
-            onChange={(e: any) => HandleMembersChanges(e)}
-            {...inputStyle}
-          >
-            <option value="1">User 1</option>
-            <option value="2">User 2</option>
-            <option value="3">User 3</option>
-          </select>
-        </div>
+        <UsersDropDown callback={HandleMembersChanges} />
         <div id="difficultyRadio" {...inputContainerStyle}>
           <h5 {...labelStyle}>Select Difficulty</h5>
           <div className="flex w-3/4">
