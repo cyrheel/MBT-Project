@@ -51,6 +51,18 @@ export const radioInputStyle = {
   className: "w-5 h-5",
 };
 
+// PROJECT CREATION PAGE
+
+export const modalBackgroundStyle = {
+  className:
+    "absolute flex top-0 left-0 w-full h-full z-10 bg-black opacity-60 items-center justify-center",
+};
+
+export const modalStyle = {
+  className:
+    "flex flex-col w-1/3 h-1/4 items-center justify-center z-20 items-center justify-evenly bg-slate-400 mt-2 border-4 border-solid border-blue-600 rounded-xl shadow-xl",
+};
+
 // PROJECT LIST PAGE
 
 export const projectListWrapper = {
