@@ -48,7 +48,7 @@ export const typeDefs = gql`
     difficulty: String
     #//! Foreign Key
     #//* Many To One
-    projectId: ID!
+    projectId: Int!
     #//* Many To Many
     Comments: [Comment]
     Users: [User]
