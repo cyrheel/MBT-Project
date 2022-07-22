@@ -4,7 +4,7 @@ const db = require('../../db');
 const jwt = require('jsonwebtoken');
 
 export const auth = {
-  Query: {
+  Mutation: {
     //? LOGIN
     login: async (parent: any, args: any, context: any, info: any) => {
       //! get user from db with unique email
@@ -34,7 +34,8 @@ export const auth = {
           httpOnly: true,
           secure: true,
         });
-        return 'You are now logged in.';
+        // Return the user c'est ici qu'on doit renvoyer le user (mais avec toutes les datas)
+        return token;
       } else {
         throw new ApolloError('Invalid credentials');
       }

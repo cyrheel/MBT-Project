@@ -77,9 +77,6 @@ export const typeDefs = gql`
 
   #//* ----------------  START DEFINING QUERIES  ---------------- *//
   type Query {
-    #//? AUTH QUERIES
-    login(email: String!, hashedPassword: String!): String
-
     #//? USER QUERIES
     getAllUsers: [User]
     getUserById(id: ID): User
@@ -125,6 +122,9 @@ export const typeDefs = gql`
   #//* ----------------  END DEFINING ENUM  ---------------- *//
   #//* ----------------  START DEFINING MUTATIONS  ---------------- *//
   type Mutation {
+    #//? AUTH QUERIES
+    login(email: String!, hashedPassword: String!): String
+
     #//* ALL FUNCTION FOR USER
     #//? CREATE A NEW USER
     createNewUser(
