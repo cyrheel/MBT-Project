@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-
 import Routeur from './routeur';
 import {
   ApolloClient,
@@ -8,17 +7,17 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import './Styles/index.css';
-import CookieContextProvider from 'Contexts/CookieContext';
+import CookieContextProvider from './Contexts/CookieContext';
 import { CookieContext } from './Contexts/CookieContext';
+import './Styles/index.css';
 
 export default function App() {
-  const { cookie, setCookie } = useContext(CookieContext);
+  const { cookie } = useContext(CookieContext);
 
   const httpLink = createHttpLink({
     uri: 'http://localhost:4000/graphql',
   });
-  const authLink = setContext((_, { headers }) => {
+  const authLink = setContext((_: any, { headers }: any) => {
     // return the headers to the context so httpLink can read them
     return {
       headers: {
@@ -34,10 +33,10 @@ export default function App() {
     link: authLink.concat(httpLink),
   });
   return (
-    <ApolloProvider client={client}>
-      <CookieContextProvider>
+    <CookieContextProvider>
+      <ApolloProvider client={client}>
         <Routeur />
-      </CookieContextProvider>
-    </ApolloProvider>
+      </ApolloProvider>
+    </CookieContextProvider>
   );
 }
