@@ -1,7 +1,7 @@
 import { useState, ChangeEvent } from 'react';
 import { CREATE_USER } from 'Hooks/useCreateUser';
 import { ApolloError, useMutation } from '@apollo/client';
-import IUser from 'Interfaces/IUser'
+import IUser from 'Interfaces/IUser';
 
 export default function InscriptionForm(): JSX.Element {
   // States
@@ -13,7 +13,6 @@ export default function InscriptionForm(): JSX.Element {
 
   const [addUser, { data, loading, error }] = useMutation(CREATE_USER);
   // Functions
-  console.log({ formState });
 
   const createUser = async (e: ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
