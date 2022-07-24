@@ -1,7 +1,6 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { ApolloError, useMutation } from '@apollo/client';
 import { LOGIN } from 'Hooks/useLogin';
-import { CookieContext } from 'Contexts/CookieContext';
 import { useNavigate } from 'react-router-dom';
 
 export default function LoginForm(): JSX.Element {
@@ -10,9 +9,6 @@ export default function LoginForm(): JSX.Element {
     email: '',
     hashedPassword: '',
   });
-  const [logged, setLogged] = useState(false);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { cookie, setCookie } = useContext(CookieContext);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [loginUser, { data, loading, error }] = useMutation(LOGIN);
   const navigate = useNavigate();
@@ -26,7 +22,7 @@ export default function LoginForm(): JSX.Element {
         hashedPassword: loginForm.hashedPassword,
       },
     });
-    setCookie(res.data.login);
+    document.cookie = `token=${res?.data?.login}`;
     navigate('/');
   };
 
@@ -57,13 +53,7 @@ export default function LoginForm(): JSX.Element {
   } else {
     return (
       <div className="w-full h-screen flex items-center">
-        <form
-          className="w-full"
-          onSubmit={async (e) => {
-            await login(e);
-            setLogged(!logged);
-          }}
-        >
+        <form className="w-full" onSubmit={(e) => login(e)}>
           <div className="flex flex-col items-center">
             <div className="w-2/3 flex flex-col py-2">
               <label className="pb-1">Email</label>

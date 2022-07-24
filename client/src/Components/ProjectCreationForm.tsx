@@ -1,8 +1,9 @@
-import React, { useState } from "react";
-import moment from "moment";
-import { ApolloError, useMutation } from "@apollo/client";
-import { CREATE_PROJECT } from "../Hooks/useCreateProject";
-import UsersDropDown from "./UsersDropDown";
+import React, { useState } from 'react';
+import moment from 'moment';
+import { ApolloError, useMutation } from '@apollo/client';
+import { CREATE_PROJECT } from '../Hooks/useCreateProject';
+import UsersDropDown from './UsersDropDown';
+import StatusDropDown from './StatusDropDown';
 import {
   formContainerStyle,
   cardStyle,
@@ -10,20 +11,19 @@ import {
   labelStyle,
   buttonStyle,
   inputContainerStyle,
-} from "../Styles/style";
-import StatusDropDown from "./StatusDropDown";
+} from '../Styles/style';
 
 function ProjectCreationForm(): JSX.Element {
-  const dateFormat = "yyyy-MM-DD";
+  const dateFormat = 'yyyy-MM-DD';
   // State
-  const [projectName, setProjectName] = useState<string>("");
-  const [projectStatus, setProjectStauts] = useState<string>("");
-  const [projectMembers, setProjectMembers] = useState<string>("");
+  const [projectName, setProjectName] = useState<string>('');
+  const [projectStatus, setProjectStauts] = useState<string>('');
+  const [projectMembers, setProjectMembers] = useState<string>('');
   const [startDate, setStartDate] = useState<string>(
     moment().format().toString()
   );
   const [endDate, setEndDate] = useState<Date>(new Date(Date.now()));
-  const [desc, setDesc] = useState<string>("");
+  const [desc, setDesc] = useState<string>('');
   // eslint-disable-next-line
   const [addProject, { data, loading, error }] = useMutation(CREATE_PROJECT);
 
@@ -65,7 +65,7 @@ function ProjectCreationForm(): JSX.Element {
     return (
       <div>
         <p>Error in project creation :/</p>
-        <p>{err ? err.message : "No error msg"}</p>
+        <p>{err ? err.message : 'No error msg'}</p>
       </div>
     );
   };
@@ -87,7 +87,7 @@ function ProjectCreationForm(): JSX.Element {
         e.preventDefault();
         addProject({
           variables: {
-            id: "$createNewProjectId",
+            id: '$createNewProjectId',
             title: projectName,
             description: desc,
             start_time: startDate,

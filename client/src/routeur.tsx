@@ -1,4 +1,3 @@
-import { useContext } from 'react';
 import {
   BrowserRouter,
   Route,
@@ -6,7 +5,6 @@ import {
   Navigate,
   useLocation,
 } from 'react-router-dom';
-import { CookieContext } from 'Contexts/CookieContext';
 import HomePage from './Pages/HomePage';
 import ConnexionPage from './Pages/ConnexionPage';
 import InscriptionPage from './Pages/InscriptionPage';
@@ -20,14 +18,10 @@ import ProjetDetailsPage from './Pages/ProjetDetailsPage';
 import ProjectListPage from './Pages/ProjectListPage';
 
 // Helpers
-function useAuth() {
-  return useContext(CookieContext);
-}
-
 function PrivateRoute({ children }: { children: JSX.Element }) {
-  let auth = useAuth();
+  let cookie = document.cookie;
   let location = useLocation();
-  if (auth.cookie === '') {
+  if (cookie === '') {
     return <Navigate to="/login" state={{ from: location.pathname }} />;
   }
   return children;
